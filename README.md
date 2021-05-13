@@ -17,3 +17,11 @@
 4. [트랜잭션](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Database/04_Transaction.md)
 5. [인덱스](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Database/05_Index.md)
 6. [NoSQL](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Database/06_NoSQL.md)
+
+## 🏗 자료구조
+1. [배열과 리스트](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/01_Array.md)
+2. [스택과 큐](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/02_StackQueue.md)
+3. [그래프](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/03_Graph.md)
+4. [해시와 해시테이블](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/04_Hash.md)
+5. [힙](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/05_Heap.md)
+6. [트리](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/DataStructure/06_Tree.md)
