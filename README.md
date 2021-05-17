@@ -36,3 +36,8 @@
 1. [브라우저 저장소와 인증 기술](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/01_StorageAuthorization.md)
 2. [웹 보안](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/02_Security.md)
 3. [브라우저 렌더링](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/03_Rendering.md)
+
+## 📝 JavaScript
+1. [문법과 주요개념들](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/01_JSBasics.md)
+2. [비동기 처리](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/02_Asynchronous.md)
+3. [모던 자바스크립트 업데이트 내용](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/03_ModernJS.md)
