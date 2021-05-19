@@ -41,3 +41,11 @@
 1. [문법과 주요개념들](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/01_JSBasics.md)
 2. [비동기 처리](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/02_Asynchronous.md)
 3. [모던 자바스크립트 업데이트 내용](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/03_ModernJS.md)
+
+## 🧩 알고리즘
+1. [버블정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EB%B2%84%EB%B8%94%EC%A0%95%EB%A0%AC---on2)
+2. [선택정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EC%84%A0%ED%83%9D%EC%A0%95%EB%A0%AC---on2)
+3. [삽입정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EC%82%BD%EC%9E%85%EC%A0%95%EB%A0%AC---on2)
+4. [병합정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EB%B3%91%ED%95%A9%EC%A0%95%EB%A0%AC---onlogn)
+5. [퀵정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%ED%80%B5-%EC%A0%95%EB%A0%AC---onlogn)
+6. [피보나치 수열을 구현하는 세 가지 방법](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/02_Fibonacci.md)
