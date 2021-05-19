@@ -74,7 +74,23 @@
 
 - 클로저는 함수가 자신의 블록 내부가 아닌 외부 스코프에 선언된 변수에 접근하는 것을 의미합니다. 
 
+~~~javascript
+function makeFunc() {
+  var name = "Mozilla";
+  function displayName() {
+    alert(name);
+  }
+  return displayName;
+}
 
+var myFunc = makeFunc();
+myFunc();
+
+~~~
+
+> example from MDN
+
+- 위 예시에서 displayName을 반환하고 이후에 호출할 때, displayName은 lexical한 정보를 가지고 있기 때문에 자신의 내부에 있는 name 에 대한 값이 존재하지 않아도 상위 함수에 있던 "Mozilla" 라는 값을 사용합니다.
 
 ## 호이스팅에 대해서 설명해보세요.
 
