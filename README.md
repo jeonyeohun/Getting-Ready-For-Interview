@@ -1,7 +1,9 @@
 # 🥷 기술면접을 준비하는 저장소 🥷
 
-운영체제, 네트워크, 데이터베이스, 자료구조, Javascript 를 다룹니다. 
-잘못된 내용이 있다면 PR을 통해 알려주세요!
+운영체제, 네트워크, 데이터베이스, 자료구조, iOS/Swfit 를 다룹니다. 
+
+웹 도메인과 자바스크립트는 더 이상 업데이트 하지 않습니다!
+개인적으로 공부하면서 정리한 내용이라 틀린 정보가 있을 수 있습니다. 혹시라도 잘못된 내용이 있다면 PR을 통해 알려주세요!
 
 ## 🤖 운영체제
 1. [프로세스](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/OperatingSystem/01_Process.md)
@@ -32,15 +34,8 @@
 3. [네트워크 계층(ARP, ICMP)](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Network/03_Network.md)
 4. [데이터 링크 계층(CSMA/CD, 이더넷)](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Network/04_Link.md)
 
-## ✈️ 웹 
-1. [브라우저 저장소와 인증 기술](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/01_StorageAuthorization.md)
-2. [웹 보안](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/02_Security.md)
-3. [브라우저 렌더링](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/03_Rendering.md)
+## iOS & Swift 
 
-## 📝 JavaScript
-1. [문법과 주요개념들](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/01_JSBasics.md)
-2. [비동기 처리](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/02_Asynchronous.md)
-3. [모던 자바스크립트 업데이트 내용](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/03_ModernJS.md)
 
 ## 🧩 알고리즘
 1. [버블정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EB%B2%84%EB%B8%94%EC%A0%95%EB%A0%AC---on2)
@@ -49,3 +44,17 @@
 4. [병합정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%EB%B3%91%ED%95%A9%EC%A0%95%EB%A0%AC---onlogn)
 5. [퀵정렬](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/01_Sorting.md#%ED%80%B5-%EC%A0%95%EB%A0%AC---onlogn)
 6. [피보나치 수열을 구현하는 세 가지 방법](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Algorithm/02_Fibonacci.md)
+
+---
+
+**[Deprecated]**
+
+### ✈️ 웹 
+1. [브라우저 저장소와 인증 기술](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/01_StorageAuthorization.md)
+2. [웹 보안](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/02_Security.md)
+3. [브라우저 렌더링](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Web/03_Rendering.md)
+
+### 📝 JavaScript
+1. [문법과 주요개념들](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/01_JSBasics.md)
+2. [비동기 처리](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/02_Asynchronous.md)
+3. [모던 자바스크립트 업데이트 내용](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Javascript/03_ModernJS.md)
