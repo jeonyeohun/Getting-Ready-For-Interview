@@ -137,7 +137,7 @@
 
 ## 10. Enum에서 raw value와 associated value에 대해 설명해보세요. (In Swift enumerations, what’s the difference between raw values and associated values?)
 
-- r`aw value`는 원시값으로 열거형의 모든 case들이 동일한 타입을 가지고 하나의 값만 가질 수 있습니다.
+- `raw value`는 원시값으로 열거형의 모든 case들이 동일한 타입을 가지고 하나의 값만 가질 수 있습니다.
 - 반면에 `associated value`는 튜플을 통해 각 case들이 다른 타입을 가지게 할 수도 있고, named tuple로 이름을 붙일 수도 있으며, 여러개의 값을 가지게 하는 것도 가능합니다.
 
   ```swift
@@ -330,69 +330,69 @@
 
 - defer 코드가 실행되지 않으면 함수가 끝나도 클로저는 실행되지 않습니다.
 
-```swift
-func deferTest() {
-    print(1)
-    return
-    defer {
-        print("last")
-    }
-    print(2)
-}
+  ```swift
+  func deferTest() {
+      print(1)
+      return
+      defer {
+          print("last")
+      }
+      print(2)
+  }
 
-deferTest()
-// 1
-```
+  deferTest()
+  // 1
+  ```
 
 - 여러개의 defer가 실행되었다면 읽혀진 역순으로 실행됩니다.
 
-```swift
-func deferTest() {
-    print(1)
-    defer {
-        print("last1")
-    }
-    defer {
-        print("last2")
-    }
-    defer {
-        print("last3")
-    }
-    print(2)
-}
+  ```swift
+  func deferTest() {
+      print(1)
+      defer {
+          print("last1")
+      }
+      defer {
+          print("last2")
+      }
+      defer {
+          print("last3")
+      }
+      print(2)
+  }
 
-deferTest()
-// 1
-// 2
-// last3
-// last2
-// last1
-```
+  deferTest()
+  // 1
+  // 2
+  // last3
+  // last2
+  // last1
+  ```
 
 - 중첩된 defer는 바깥쪽 defer 부터 실행됩니다.
 
-```swift
-func deferTest() {
-    print(1)
-    defer {
-        print("last1")
-        defer {
-            print("last2")
-            defer {
-                print("last3")
-            }
-        }
-    }
-    print(2)
-}
+  ```swift
+  func deferTest() {
+      print(1)
+      defer {
+          print("last1")
+          defer {
+              print("last2")
+              defer {
+                  print("last3")
+              }
+          }
+      }
+      print(2)
+  }
 
-deferTest()
-// 1
-// 2
-// last1
-// last2
-// last3
-```
+  deferTest()
+  // 1
+  // 2
+  // last1
+  // last2
+  // last3
+  ```
 
 </br>
 
