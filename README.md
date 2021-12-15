@@ -5,6 +5,10 @@
 웹 도메인과 자바스크립트는 더 이상 업데이트 하지 않습니다!
 개인적으로 공부하면서 정리한 내용이라 틀린 정보가 있을 수 있습니다. 혹시라도 잘못된 내용이 있다면 PR을 통해 알려주세요!
 
+## 🍎 iOS & Swift
+
+1. [스위프트 문법, 개념, 원리 100문 100답](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/iOS-Swift/swift.md)
+
 ## 🤖 운영체제
 
 1. [프로세스](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/OperatingSystem/01_Process.md)
@@ -37,10 +41,6 @@
 2. [전송 계층(TCP, UDP, SSL/TLS)](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Network/02_Transport.md)
 3. [네트워크 계층(ARP, ICMP)](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Network/03_Network.md)
 4. [데이터 링크 계층(CSMA/CD, 이더넷)](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/Network/04_Link.md)
-
-## 🍎 iOS & Swift
-
-1. [스위프트 문법, 개념, 원리 100문 100답](https://github.com/jeonyeohun/GetReadyForInterview/blob/main/iOS-Swift/swift.md)
 
 ## 🧩 알고리즘
 
