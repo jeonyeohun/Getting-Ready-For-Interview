@@ -488,35 +488,41 @@
 
 </br>
 
-## 50. Do we need to use [weak self] or [unowned self] in this closure?
+## 50. Why can not we just use weak everywhere and forget about unowned?
 
 </br>
 
-## 51. Why can not we just use weak everywhere and forget about unowned?
+## 51. Explain the use case when ARC won't help you to release memory (but GC will)?
 
 </br>
 
-## 52. Explain the use case when ARC won't help you to release memory (but GC will)?
+## 52. Explain what is DispatchGroup?
 
 </br>
 
-## 53. Explain what is DispatchGroup?
+## 53. What are the benefits of using DispatchWorkItem in Swift? Related To: iOS
 
 </br>
 
-## 54. What are the benefits of using DispatchWorkItem in Swift? Related To: iOS
+## 54. Explain usage of Concurrent vs Serial Queues with async and sync blocks Related To: iOS
 
 </br>
 
-## 55. Explain usage of Concurrent vs Serial Queues with async and sync blocks Related To: iOS
+## 55. What is the difference between @escaping and @nonescaping Closures in Swift?
 
 </br>
 
-## 56. What is the difference between @escaping and @nonescaping Closures in Swift?
+## 56. What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?
 
-</br>
+## 57. Extension은 메서드를 Override 할 수 있을까요?
 
-## 57. What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?
+## 58. RunLoop에 대해서 설명해보세요.
+
+## 59. autoreleasepool에 대해서 설명해보세요.
+
+## 60. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
+
+## 61. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
 
 ## Questions Source
 
