@@ -396,55 +396,122 @@
 
 </br>
 
-## 27. What is the difference between open and public keywords in Swift?
+## 27. open과 public 키워드의 차이를 설명해보세요. (What is the difference between open and public keywords in Swift?)
+
+- `open`과 `public` 키워드 모두 `외부 모듈에서의 접근까지 허용`합니다.
+- open은 `클래스에서만 사용`할 수 있습니다.
+- open은 외부 모듈에서 클래스를 상속하는 것과 메소드 오버라이딩이 가능하지만 public은 외부 모듈에서의 클래스 상속과 메소드 오버라이딩을 `제한`합니다.
+- 동일한 모듈 내에서는 open과 public 모두 클래스 상속과 메소드 오버라이딩이 가능합니다.
 
 </br>
 
-## 28. When to use fileprivate access modifier in Swift?
+## 28. fileprivate을 설명하고 언제 사용하면 좋을지 이야기해보세요. (When to use fileprivate access modifier in Swift?)
+
+- fileprivate은 `같은 소스파일 내에서의 접근만 하용`합니다.
+- fileprivate인 인스턴스를 할당하는 변수는 `private이거나 fileprivate`으로 접근이 제한되어야 합니다.
+- fileprivate인 클래스를 상속할 때도 상속받는 클래스가 `private이거나 fileprivate`이어야 합니다.
+- 같은 파일 내부에서만 사용되는 클래스일 때 fileprivate로 제한하면 유용하게 사용할 수 있습니다.
 
 </br>
 
 ## 29. What is the difference between fileprivate and private?
 
+- fileprivate은 같은 파일 내부에 있다면 접근을 허용했지만 private은 같은 파일에 있어도 private으로 선언한 대상의 구현부 내부와 같은 파일에 있는 동일한 선언의 Extension 에서의 접근만 허용합니다.
+
+  ```swift
+  private class A {
+    public init() {}
+    private var data: String
+  }
+
+  extension A { // 같은 파일에 있을 때만 가능
+    func updateData(data: String) {
+      self.data = data
+    }
+  }
+
+  ```
+
 </br>
 
 ## 30. What is the difference between static func and class func in Swift?
 
-</br>
-
-## 31. What is the difference between functions and closures?
-
-</br>
-
-## 32. Can you rewrite this code using mutating function?
+- static func, class func 모두 `타입 메소드`이기 때문에 인스턴스를 생성하지 않고 타입에 접근해 함수를 호출할 수 있습니다.
+- class func는 `오버라이딩`을 허용하지만 static func는 오버라이딩을 허용하지 않습니다.
 
 </br>
 
-## 33. Are there any differences between Protocol in Swift vs Interface in Java? Related To: Java
+## 31. Function과 Closure의 차이를 설명해보세요. (What is the difference between functions and closures?)
+
+- Function과 Closure 모두 실행가능한 코드블록을 의미합니다.
+- Function은 func 키워드와 함께 선언되고 `함수의 이름`을 항상 가져야합니다. 반면에 클로저는 이름을 가지지 않습니다.
 
 </br>
 
-## 34. Is there a way to create an abstract class in Swift?
+## 32. 스위프트에서 추상 클래스를 만드려면 어떻게 해야할까요? (Is there a way to create an abstract class in Swift?)
+
+- 스위프트는 추상 클래스 문법을 지원하지는 않지만 프로토콜을 통해 동일한 동작을 하도록 할 수 있습니다.
+- 프로퍼티와 메서드의 원형을 프로토콜에 선언해두고, `Extension`을 통해 프로토콜 메서드의 기본 구현체를 만들어주면 추상클래스와 동일한 개념의 구현을 할 수 있습니다.
 
 </br>
 
-## 35. What’s the difference between Any and AnyObject?
+## 33. Any와 AnyPbject의 차이를 설명해보세요. (What’s the difference between Any and AnyObject?)
+
+- Any와 AnyObject 모두 범용타입으로 여러 타입을 한번에 표현할 수 있게 해주지만 AnyObject는 `클래스 타입만` 저장할 수 있다는 제한조건이 추가됩니다.
 
 </br>
 
-## 36. Explain when to use different Swift casting operators?
+## 34. 언제 클래스 대신 구조체를 사용하면 좋을까요? (When should you use Structs over Classes?)
+
+- 스위프트에서는 기본적으로 구조체를 사용하길 권장하고 있습니다.
+- 구조체는 불변성을 유지하기 때문에 여러 스레드들이 한 인스턴스를 사용하는 `다중 스레드 환경에서도 안전`하게 사용될 수 있습니다.
 
 </br>
 
-## 37. When should you use Structs over Classes?
+## 35. 언제 구조체 대신 클래스를 선택해야할까요? (When should you use Classes over Structs?)
+
+- 구조체는 값 타입이기 때문에 값이 같은 인스턴스가 매번 복사되어 사용됩니다.
+- 따라서 만약 어떤 인스턴스의 참조값의 `고유성을 유지`하고 싶다면 클래스를 사용할 수 있습니다.
+- 또한 `Objective-C의 API를 사용할 때`는 클래스가 반드시 필요하기도 합니다. i.e.)NSCache의 value에는 구조체 인스턴스를 사용할 수 없습니다.
 
 </br>
 
-## 38. When should you use Classes over Structs?
+## 36. weak과 unowned 의 차이를 설명하고 예를 들어주세요. (Explain the difference between weak and unowned references. Provide an example.)
 
-</br>
+- weak은 참조하고 있던 인스턴스가 해제되는 것을 염두하여 항상 Optional한 타입을 가집니다. 만약 weak으로 선언한 변수가 참조하고 있던 인스턴스가 메모리에서 해제되면 해당 변수의 값은 nil로 채워집니다.
+- unowned는 참조하고 있는 인스턴스가 unowned 변수 이전에는 절대 해제되지 않음을 보장하는 상황에서 사용합니다. Optional이 아닌 타입을 가집니다. 따라서 unowned가 참조하고 있던 인스턴스가 해제된 이후에 unowned 변수를 참조하면 런타임 에러가 발생합니다.
 
-## 39. Explain the difference between weak and unowned references. Provide an example.
+```swift
+// https://stackoverflow.com/questions/24011575/what-is-the-difference-between-a-weak-reference-and-an-unowned-reference
+class Person {
+    let name: String
+    init(name: String) { self.name = name }
+    var apartment: Apartment?
+}
+
+class Apartment {
+    let number: Int
+    init(number: Int) { self.number = number }
+    weak var tenant: Person?
+}
+// Person ===(strong)==> Apartment
+// Person <==(weak)===== Apartment
+
+class Customer {
+    let name: String
+    var card: CreditCard?
+    init(name: String) { self.name = name }
+}
+
+class CreditCard {
+    let number: UInt64
+    unowned let customer: Customer
+    init(number: UInt64, customer: Customer) { self.number = number; self.customer = customer }
+}
+
+// Customer ===(strong)==> CreditCard
+// Customer <==(unowned)== CreditCard
+```
 
 </br>
 
