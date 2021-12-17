@@ -414,9 +414,9 @@
 
 </br>
 
-## 29. What is the difference between fileprivate and private?
+## 29. fileprivate과 private의 차이를 설명해보세요. (What is the difference between fileprivate and private?)
 
-- fileprivate은 같은 파일 내부에 있다면 접근을 허용했지만 private은 같은 파일에 있어도 private으로 선언한 대상의 구현부 내부와 같은 파일에 있는 동일한 선언의 Extension 에서의 접근만 허용합니다.
+- fileprivate은 같은 파일 내부에 있다면 접근을 허용했지만 private은 같은 파일에 있어도 private으로 선언한 대상의 `구현부 내부`, 그리고 같은 파일에 있는 `동일한 선언의 Extension` 에서의 접근만 허용합니다.
 
   ```swift
   private class A {
@@ -434,10 +434,11 @@
 
 </br>
 
-## 30. What is the difference between static func and class func in Swift?
+## 30. static func 와 class func의 차이를 설명해보세요. (What is the difference between static func and class func in Swift?)
 
 - static func, class func 모두 `타입 메소드`이기 때문에 인스턴스를 생성하지 않고 타입에 접근해 함수를 호출할 수 있습니다.
 - class func는 `오버라이딩`을 허용하지만 static func는 오버라이딩을 허용하지 않습니다.
+- 스위프트에서 유일하게 직접적인 상속을 지원하는 객체타입이 클래스라는 것을 생각해보면 class만 오버라이딩을 허용하는 것과 쉽게 연결시킬 수 있습니다!
 
 </br>
 
@@ -479,7 +480,7 @@
 ## 36. weak과 unowned 의 차이를 설명하고 예를 들어주세요. (Explain the difference between weak and unowned references. Provide an example.)
 
 - weak은 참조하고 있던 인스턴스가 해제되는 것을 염두하여 항상 Optional한 타입을 가집니다. 만약 weak으로 선언한 변수가 참조하고 있던 인스턴스가 메모리에서 해제되면 해당 변수의 값은 nil로 채워집니다.
-- unowned는 참조하고 있는 인스턴스가 unowned 변수 이전에는 절대 해제되지 않음을 보장하는 상황에서 사용합니다. Optional이 아닌 타입을 가집니다. 따라서 unowned가 참조하고 있던 인스턴스가 해제된 이후에 unowned 변수를 참조하면 런타임 에러가 발생합니다.
+- unowned는 참조하고 있는 인스턴스가 `unowned 변수 이전에는 절대 해제되지 않음을 보장하는 상황`에서 사용합니다. Optional이 아닌 타입을 가집니다. 따라서 unowned가 참조하고 있던 인스턴스가 해제된 이후에 unowned 변수를 참조하면 런타임 에러가 발생합니다.
 
 ```swift
 // https://stackoverflow.com/questions/24011575/what-is-the-difference-between-a-weak-reference-and-an-unowned-reference
@@ -515,81 +516,357 @@ class CreditCard {
 
 </br>
 
-## 40. When is it safe to use an unowned reference?
+## 37. unowned는 언제 사용하는 것이 안전할까요? (When is it safe to use an unowned reference?)
+
+- unowned로 선언된 변수가 참조하는 인스턴스가 해당 unowned 변수가 해제된 이후에 해제되는 것이 보장되는 상황에서 사용하는 것이 안전합니다.
+
+  ```swift
+  // https://www.advancedswift.com/strong-weak-unowned-in-swift/
+  extension HomeVC {
+      // Calling loadAPI no longer creates a Retain Cycle:
+      // 1. Self (HomeVC) has a strong reference to api
+      // 2. api has a strong reference to completion
+      // 3. completion has a unowned reference to self (HomeVC)
+      func loadAPI() {
+          api.completion = { [unowned self] (data, error) in
+              self.hideLoadingIndicator()
+          }
+      }
+      // HomeVC -> api -> completion === (unonwned) ===> HomeVC
+  }
+  ```
 
 </br>
 
-## 41. What is Copy on Write (Cow) in Swift?
+## 38. Swift의 Copy-on-Write에 대해서 설명해보세요. (What is Copy on Write (Cow) in Swift?)
+
+- COW는 값 타입의 복사를 `실제로 값이 수정되기 전까지는 발생시키지 않아 메모리 사용을 최적화`하는 방법입니다. 예를 들어서 값타입인 배열을 두 변수에 저장해두면 두 개의 다른 인스턴스가 생성될 것을 기대하지만 실제로는 주소 값을 공유하고 있다가 변수에 변경사항이 생겼을 때 새로운 인스턴스를 할당합니다.
+- 이렇게 하면 수정이 일어나지 않는 값 타입 데이터는 복사본을 만들지 않고 사용되기 때문에 메모리 사용을 최적화할 수 있습니다.
+
+  ```swift
+  import Foundation
+
+  func compareValueTypeInstance(of arr1:[Int], with arr2:[Int]) {
+      if arr1 == arr2 {
+          print("same instance")
+      } else {
+          print("different istance")
+      }
+  }
+
+  let arr1 = [1, 2, 3, 4]
+  var arr2 = arr1
+
+  compareValueTypeInstance(of: arr1, with: arr2) // "same instance"
+
+  arr2.append(5)
+
+  compareValueTypeInstance(of: arr1, with: arr2) // "different istance"
+  ```
 
 </br>
 
-## 42. What’s the difference between a static variable and a class variable?
+## 39. staic 변수와 class 변수에 대해 설명해보세요. (What’s the difference between a static variable and a class variable?)
+
+- static 변수와 class 변수 모두 `타입 프로퍼티`로 클래스, 구조체, 열거형에 모두 사용할 수 있습니다.
+- 타입 프로퍼티는 `lazy`하게 동작해서 실제로 불리기 전까지는 메모리에 로드되지 않습니다.
+- 타입 프로퍼티는 한 번 불리면 메모리에 로드되고 그 이후로는 `새로 생성되지 않습니다`.
+- 타입 프로퍼티는 타입 이름을 통해서만 접근이 가능하고 `초기값을 항상 가져야합니다`.
+- `class`로 선언된 타입 프로퍼티는 `오버라이딩이 가능`합니다.
+- 반면에 `static`으로 선언된 타입 프로퍼티는 `오버라이딩이 불가능`합니다.
 
 </br>
 
-## 43. What is the difference between ARC (automatic reference counting) and GC (garbage collection)?
+## 40. ARC와 GC는 어떤 차이점이 있나요? (What is the difference between ARC (automatic reference counting) and GC (garbage collection)?)
+
+- ARC와 GC의 가장 큰 차이점은 런타임에 처리를 하는지, 컴파일 타임에 처리를 하는지에 있습니다. `ARC`는 Retain과 Release를 컴파일러가 `컴파일 타임`에 자동으로 삽입해 Reference Count를 조절합니다.
+- 반변에 `GC`는 가비지 콜렉터를 `런타임`에 별도로 실행하면서 메모리의 상태를 감시합니다.
+- ARC는 단순히 카운팅을 통해 인스턴스들을 관리하기 때문에 순환참조의 위험이 있습니다.
+- GC는 `Mark-and-Sweep` 방식으로 루트노드부터 도달 가능한 인스턴스들을 모두 체크합니다. 따라서 순환참조가 발생하더라도 두 인스턴스를 참조하는 인스턴스가 해제되면 루트로부터 순환참조가 발생한 인스턴스들에 도달할 수 있는 경로가 없기 때문에 두 인스턴스를 모두 해제할 수 있습니다.
 
 </br>
 
-## 44. What is the autoclosure attribute and when to use it?
+## 41. autoclosure attribute에 대해서 설명해보세요. (What is the autoclosure attribute and when to use it?)
+
+- autoclosure는 클로저가 아닌 코드를 함수의 인자로 받을 때 이 `코드를 클로저로` 만들어주는 키워드입니다.
+- autoclosure의 주된 목적은 코드의 `실행을 지연`시키기 위함입니다. 클로저를 인자를 넘기는 것으로도 지연 실행을 만족시킬 수 있지만 autoclosure를 사용하면 호출하는 측 코드의 가독성이 좋아집니다.
+
+  - 클로저 사용 X
+
+  ```swift
+  // https://www.avanderlee.com/swift/autoclosure/
+
+   struct Person: CustomStringConvertible {
+     let name: String
+
+     var description: String {
+         print("Asking for Person description.")
+         return "Person name is \(name)"
+     }
+  }
+
+  let isDebuggingEnabled: Bool = false
+
+  func debugLog(_ message: String) {
+      /// You could replace this in projects with #if DEBUG
+      if isDebuggingEnabled {
+          print("[DEBUG] \(message)")
+      }
+  }
+
+  let person = Person(name: "Bernie")
+  debugLog(person.description) // 디버깅 모드가 아니어도 person.description이 실행됨
+  ```
+
+  - 클로저 사용
+
+  ```swift
+   let isDebuggingEnabled: Bool = false
+
+  func debugLog(_ message: () -> String) {
+      /// You could replace this in projects with #if DEBUG
+      if isDebuggingEnabled {
+          print("[DEBUG] \(message())")
+      }
+  }
+
+  let person = Person(name: "Bernie")
+  debugLog({ person.description }) // 클로저가 넘어가기 때문에 description 참조가 실행되지 않음
+  ```
+
+  - autoclosure 사용
+
+  ```swift
+   let isDebuggingEnabled: Bool = false
+
+  func debugLog(_ message: @autoclosure () -> String) {
+      /// You could replace this in projects with #if DEBUG
+      if isDebuggingEnabled {
+          print("[DEBUG] \(message())")
+      }
+  }
+
+  let person = Person(name: "Bernie")
+  debugLog(person.description) // 클로저로 래핑되면서 들어가기 때문에 description 참조가 실행되지 않음
+  ```
 
 </br>
 
-## 45. What is QoS (Quality of Service) in GCD?
+## 42. GCD의 QoS에 대해서 설명해보세요. (What is QoS (Quality of Service) in GCD?)
+
+- Qos 는 DispatchQueue에 등록하는 `작업의 우선순위`를 결정할 수 있게 합니다.
+- 우선순위가 높은 작업은 우선순위가 낮은 작업보다 먼저 실행되지만 앱의 리소스를 많이 사용합니다.
+- qos 수준은 다음으로 정의됩니다.
+
+  - `userInterative`: 가장 우선순위가 높습니다. UI작업 등 사용자에게 즉각적인 반응을 해야하는 작업에 사용합니다.
+  - `userInitiated`: 문서를 열람하거나 인터페이스에 제스쳐를 취하는 등 사용자와의 상호작용이 시작되었을 때 곧바로 결과를 반환해야 하는 작업에 사용합니다.
+  - `default`: 기본값입니다. 일반적인 작업에 사용합니다.
+  - `utility`: 데이터를 다룬로드 하는 등 결과를 만들기 위해 시간이 걸리는 작업에 사용합니다. 프로그래스 바나 액티비티 인디케이터와 함께 사용합니다.
+  - `background`: 사용자가 인지하지 못하는 영역에서 에너지와 리소스를 효율적으로 사용하기 위해 사용합니다.
 
 </br>
 
-## 46. Explain how that code will behave for different Swift versions?
+## 43. Hashable 프로토콜에 대해서 설명해보세요. (What is the use of Hashable protocol?)
+
+- Hashable 프로토콜을 채택하는 타입은 모두 값을 `정수인 해시값`으로 표현할 수 있습니다.
+- 스위프트의 기본 타입 중 `문자열, 정수, 실수, 불리언, 그리고 Set 콜렉션`이 Hashable 프로토콜을 채택하고 있습니다.
+- Hashable 프로토콜을 채택하는 커스텀 타입의 `저장 프로퍼티가 모두` Hashable 프로토콜을 채택하고 있다면, 별다른 구현없이 Hashable 프로토콜을 채택하는 것 만으로 Hashable한 동작을 제공합니다.
+- 그렇지 않다면 `==` 메서드를 만들고 hash(into:) 구현해서 해시값을 생성하는데 필요한 프로퍼티를 지정해주어야합니다.
+
+  ```swift
+  // https://developer.apple.com/documentation/swift/hashable
+  struct GridPoint {
+    var x: Int
+    var y: Int
+  }
+
+  extension GridPoint: Hashable {
+    static func == (lhs: GridPoint, rhs: GridPoint) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
+    }
+  }
+  ```
 
 </br>
 
-## 47. What is the use of Hashable protocol?
+## 44. 열거형도 Hashable을 채택했을 때 자동으로 Hashable하게 만들 수 있나요?
+
+- 열거형은 `associated value`가 없는 경우에는 Hashable 프로토콜만 채택해도 Hashable하게 사용할 수 있습니다.
+- 하지만 associated value가 있는 경우에는 `hash` 메서드를 구현해주어야 합니다.
+
+## 45. init?()과 init()은 어떤 차이가 있나요? (What’s the difference between init?() and init()?)
+
+- init?()은 `실패가능한 생성자`로 생성자의 코드를 실행하다가 문제가 생겼을 때 nil을 반환하도록 할 수 있습니다.
+
+  ```swift
+  class A {
+    let a: String
+
+    init?(a: String) {
+        guard !a.isEmpty else { return nil }
+        self.a = a
+    }
+  }
+
+  print(A(a: ""))
+  print(A(a: "abc")?.a)
+  ```
 
 </br>
 
-## 48. What’s the difference between init?() and init()?
+## 46. Never 반환 타입에 대해 설명해보세요. (What is the Never return type? When to use it over Void?)
+
+- Never 타입은 `비정상적인 종료`에 사용되는 반환 타입이며 값을 지니지는 않습니다.
+- 클로저, 함수에 에러를 throw하는 것으로 잡을 수 없는 심각한 오류가 있음을 알릴 때 사용할 수 있습니다.
+
+  ```swift
+  func crashAndBurn() -> Never {
+      fatalError("Something very, very bad happened")
+  }
+  ```
 
 </br>
 
-## 49. What is the Never return type? When to use it over Void?
+## 47. weak만 사용하지 않고 unowned도 사용하는 이유가 무엇을까요? (Why can not we just use weak everywhere and forget about unowned?)
+
+- unowned를 사용하면 `옵셔널`을 신경쓰지 않아도 된다는 장점이 있습니다.
+- unowned를 사용하면 참조하고 있는 인스턴스가 unowned 프로퍼티 이전에 항상 메모리에서 해제되는 것을 `명시적으로 표현`할 수 있습니다.
 
 </br>
 
-## 50. Why can not we just use weak everywhere and forget about unowned?
+## 48. ARC가 메모리해제를 할 수 ㅇ벗는 상황에 대해 설명해보세요. GC는 해결할 수 있을까요? (Explain the use case when ARC won't help you to release memory (but GC will)?)
+
+- ARC는 강한 순환 참조 상황에서 인스턴스를 해제하지 못하는 문제가 있습니다. 만약 어떤 두 클래스 인스턴스가 프로퍼티에 서로를 `강함 참조`로 저장하고 있을 때 `강한 순환 참조`가 발생할 수 있습니다.
+
+  - 순환참조 발생
+
+  ```swift
+  class A {
+    var b: B?
+
+    deinit {
+        print("A deinitialzied")
+    }
+  }
+
+  class B {
+      var a: A?
+
+      deinit {
+          print("B deinitialzied")
+      }
+  }
+
+  var a = A()
+  var b = B()
+
+  a.b = b
+  b.a = a
+
+  a = A()
+  b = B()
+
+  // retain cycle
+  ```
+
+  - weak로 순환참조 회피
+
+  ```swift
+  class A {
+    var b: B?
+
+    deinit {
+        print("A deinitialzied")
+    }
+  }
+
+  class B {
+      var a: A?
+
+      deinit {
+          print("B deinitialzied")
+      }
+  }
+
+  var a = A()
+  var b = B()
+
+  a.b = b
+  b.a = a
+
+  a = A()
+  b = B()
+
+  // B deinitialzied
+  // A deinitialzied
+  ```
 
 </br>
 
-## 51. Explain the use case when ARC won't help you to release memory (but GC will)?
+## 49. DispatchGroup에 대해서 설명해보세요. (Explain what is DispatchGroup?)
+
+- DispatchGroup은 여러 스레드에 분배되어 있는 작업들을 그룹으로 묶어서 동기적으로 관리하기 위해 사용합니다.
+- DispatchGroup에 추가될 때 enter 메서드를 통해 작업의 개수를 1 늘려주고, 작업이 끝날 때 DispatchGroup에서 빠져나오면서 작업의 개수를 하나 줄여줍니다.
+- 작업의 개수가 0이되면 notify 메서드가 실행되면서 모든 작업이 끝났을 때에 대한 처리를 수행할 수 있습니다.
+- enter, leave, notoify를 이용해서 여러개의 비동기 작업들이 전부 끝날 때 작업을 수행하게 할 수도 있습니다.
+
+  ```swift
+  // https://stackoverflow.com/questions/49376157/swift-dispatchgroup-notify-before-task-finish
+  let group = DispatchGroup()
+  let queueImage = DispatchQueue(label: "com.image")
+  let queueVideo = DispatchQueue(label: "com.video")
+
+  group.enter()
+  queueImage.async(group: group) {
+      sleep(2)
+      print("image")
+      group.leave()
+  }
+
+  group.enter()
+  queueVideo.async(group: group) {
+      sleep(3)
+      print("video")
+      group.leave()
+  }
+
+  group.notify(queue: .main) {
+      print("all finished.")
+  }
+  ```
 
 </br>
 
-## 52. Explain what is DispatchGroup?
+## 50. What are the benefits of using DispatchWorkItem in Swift? Related To: iOS
 
 </br>
 
-## 53. What are the benefits of using DispatchWorkItem in Swift? Related To: iOS
+## 51. Explain usage of Concurrent vs Serial Queues with async and sync blocks Related To: iOS
 
 </br>
 
-## 54. Explain usage of Concurrent vs Serial Queues with async and sync blocks Related To: iOS
+## 52. What is the difference between @escaping and @nonescaping Closures in Swift?
 
 </br>
 
-## 55. What is the difference between @escaping and @nonescaping Closures in Swift?
+## 53. What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?
 
-</br>
+## 54. Extension은 메서드를 Override 할 수 있을까요?
 
-## 56. What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?
+## 55. RunLoop에 대해서 설명해보세요.
 
-## 57. Extension은 메서드를 Override 할 수 있을까요?
+## 56. autoreleasepool에 대해서 설명해보세요.
 
-## 58. RunLoop에 대해서 설명해보세요.
+## 57. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
 
-## 59. autoreleasepool에 대해서 설명해보세요.
+## 58. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
 
-## 60. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
-
-## 61. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
+## 59. 프로퍼티 옵저버에 대해 설명해보세요.
 
 ## Questions Source
 
