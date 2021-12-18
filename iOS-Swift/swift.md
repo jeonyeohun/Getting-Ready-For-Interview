@@ -811,8 +811,8 @@ class CreditCard {
 ## 49. DispatchGroup에 대해서 설명해보세요. (Explain what is DispatchGroup?)
 
 - DispatchGroup은 여러 스레드에 분배되어 있는 작업들을 그룹으로 묶어서 동기적으로 관리하기 위해 사용합니다.
-- DispatchGroup에 추가될 때 enter 메서드를 통해 작업의 개수를 1 늘려주고, 작업이 끝날 때 DispatchGroup에서 빠져나오면서 작업의 개수를 하나 줄여줍니다.
-- 작업의 개수가 0이되면 notify 메서드가 실행되면서 모든 작업이 끝났을 때에 대한 처리를 수행할 수 있습니다.
+- DispatchGroup에 추가될 때 `enter` 메서드를 통해 작업의 개수를 1 늘려주고, 작업이 끝날 때 DispatchGroup에서 빠져나오면서 `leave` 메서드를 통해 작업의 개수를 하나 줄여줍니다.
+- 작업의 개수가 0이되면 `notify` 메서드가 실행되면서 모든 작업이 끝났을 때에 대한 처리를 수행할 수 있습니다.
 - enter, leave, notoify를 이용해서 여러개의 비동기 작업들이 전부 끝날 때 작업을 수행하게 할 수도 있습니다.
 
   ```swift
@@ -842,31 +842,128 @@ class CreditCard {
 
 </br>
 
-## 50. What are the benefits of using DispatchWorkItem in Swift? Related To: iOS
+## 50. DispatchWorkItem의 장점이 무엇인가요? (What are the benefits of using DispatchWorkItem in Swift?)
+
+- DispatchWorkItem을 사용하면 DispatchQueue에 등록할 작업을 `캡슐화`할 수 있습니다.
+
+  ```swift
+  let queue = DispatchQueue(label: "custom")
+  let workItem = DispatchWorkItem {
+    print("task is running")
+  }
+  queue.async(execute: workItem)
+  ```
+
+- DispatchWorkItem을 사용하면 `cancel`, `wait` 등 제공되는 메서드를 사용해서 쉽게 작업에 대한 동작을 지정할 수 있습니다.
+
+  ```swift
+  class SearchViewController: UIViewController, UISearchBarDelegate {
+    // We keep track of the pending work item as a property
+    private var pendingRequestWorkItem: DispatchWorkItem?
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Cancel the currently pending item
+        pendingRequestWorkItem?.cancel()
+
+        // Wrap our request in a work item
+        let requestWorkItem = DispatchWorkItem { [weak self] in
+            self?.resultsLoader.loadResults(forQuery: searchText)
+        }
+
+        // Save the new work item and execute it after 250 ms
+        pendingRequestWorkItem = requestWorkItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250),
+                                      execute: requestWorkItem)
+    }
+  }
+  ```
 
 </br>
 
-## 51. Explain usage of Concurrent vs Serial Queues with async and sync blocks Related To: iOS
+## 51. Concurrent와 Serial Queue가 async, sync와 함께 사용되는 상황에 대해서 설명해보세요. (Explain usage of Concurrent vs Serial Queues with async and sync blocks)
+
+- `concurrent + sync`: DispatchQueue에 작업이 `sync`하게 등록되기 때문에 작업을 등록하는 스레드는 작업을 등록하고 `작업이 마쳐질 때까지 기다립니다`. DispatchQueue에 등록된 작업은 `concurrent`하게 처리되기 때문에 작업의 종료여부와 상관없이 `할당 가능한 스레드가 있다면 큐에 있는 작업을 스레드에 할당`시켜 작업을 시작합니다.
+- `concurrent + async`: DispatchQueue에 작업이 `async`하게 등록되기 때문에 작업을 등록하는 스레드는 등록한 작업이 끝나길 기다리지 않고 곧바로 다음 코드를 실행합니다. DispatchQueue에 있는 작업은 `concurrent`하게 처리되기 때문에 작업의 종료여부와 상관없이 `할당 가능한 스레드가 있다면 큐에 있는 작업을 스레드에 할당`시켜 작업을 시작합니다.
+- `serial + sync`: DispatchQueue에 작업이 `sync`하게 등록되기 때문에 작업을 등록하는 스레드는 작업을 등록하고 `작업이 마쳐질 때까지 기다립니다`. DispatchQueue에 등록된 작업은 `serial`하게 처리되기 때문에 `현재 작업에 대한 처리가 끝나면` 큐에 등록된 다음 작업을 스레드에 할당해 시작합니다.
+- `serial + async`: DispatchQueue에 작업이 `async`하게 등록되기 때문에 작업을 등록하는 스레드는 등록한 작업이 끝나길 기다리지 않고 곧바로 다음 코드를 실행합니다. DispatchQueue에 등록된 작업은 `serial`하게 처리되기 때문에 `현재 작업에 대한 처리가 끝나면` 큐에 등록된 다음 작업을 스레드에 할당해 시작합니다.
 
 </br>
 
-## 52. What is the difference between @escaping and @nonescaping Closures in Swift?
+## 52. @escaping에 대해서 설명해보세요.
+
+- @escaping은 함수의 인자로 전달된 클로저를 함수가 종료된 후에 실행될 수 있도록 하는 속성입니다.
+
+  ```swift
+  func completionTest(completion: @escaping () -> Void) {
+    DispatchQueue.global().async {
+        completion()
+    }
+    print("1")
+  }
+
+  completionTest {
+      print("end")
+  }
+  // 1
+  // end
+  ```
 
 </br>
 
-## 53. What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?
+## 53. @objc와 dynamic의 차이에 대해서 설명해보세요. (What's the difference between marking a method as @objc vs dynamic, when would you do one vs the other?)
+
+- dynamic을 통해 선언된 멤버변수나 객체는 Objective-C를 사용해서 동`적으로 디스패치`됩니다. 동적 디스패치는 런타임에 클래스가 연관 클래스들의 메서드 구현체들 중 어떤 클래스의 구현체를 사용하지 결정하는 것을 의미합니다.
+- @objc는 `스위프트의 API를 Objective-C에서` 사용할 수 있도록 하는 속성이니다.
 
 ## 54. Extension은 메서드를 Override 할 수 있을까요?
 
+- Extension에서는 메서드를 `override 할 수 없습니다`.
+- Extension은 `새로운 함수`를 추가하기 위한 기능이지 기존 함수를 대체하기 위한 기능은 아닙니다.
+
 ## 55. RunLoop에 대해서 설명해보세요.
 
+- RunLoop는 스레드 당 하나씩 생성되어서 Thread에 작업이 생기면 처리하고, 아닐 때는 대기시키는 역할을 합니다.
+- RunLoop는 `메인 스레드를 제외`한 스레드에서는 자동으로 실행되지 않고 `개발자가 직접` 실행시켜주어야 합니다.
+- RunLoop를 실행하면 실행되는 동안 도착한 `EventSource`(input source, timer source)를 실행합니다.
+- RunLoop는 `한 번만` 실행되고 실행이 끝나면 대기상태로 돌아갑니다.
+
 ## 56. autoreleasepool에 대해서 설명해보세요.
+
+- autorelease는 참조 카운트의 감소를 `즉시하지 않고 예약`을 할 수 있게하는 키워드입니다. 예약된 release는 autoreleasepool에 등록되고, `autoreleasepool 인스턴스가 해제되면` 등록되어 있던 예약된 release들이 모두 실행됩니다.
+- 만약 함수가 끝나기 전에 메모리에서 해제되어야 하는 인스턴스가 있다면 autorelease pool로 명시적으로 인스턴스의 참조 카운트를 줄여줄 수 있습니다.
+
+  ```swift
+  func useManyImages() {
+    let filename = pathForResourceInBundle
+
+    for _ in 0 ..< 5 {
+        for _ in 0 ..< 1000 {
+            let image = UIImage(contentsOfFile: filename) // 5000개 생성
+        }
+    }
+    // 5000개 해제
+  }
+
+  func useManyImages() {
+    let filename = pathForResourceInBundle
+
+    for _ in 0 ..< 5 {
+      autoreleasepool {
+        for _ in 0 ..< 1000 {
+            let image = UIImage(contentsOfFile: filename) // 1000개 생성
+        }
+      } // 1000개 해제
+    }
+  }
+  ```
 
 ## 57. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
 
 ## 58. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
 
 ## 59. 프로퍼티 옵저버에 대해 설명해보세요.
+
+## 60. Property Wrapper에 대해 설명해보세요.
 
 ## Questions Source
 
