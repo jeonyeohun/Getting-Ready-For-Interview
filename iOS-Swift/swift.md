@@ -959,12 +959,234 @@ class CreditCard {
 
 ## 57. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
 
+- `OperationQueue`는 작업을 나타내는 Operation 클래스의 실행을 관리하는 큐입니다. GCD와는 다르게 OperationQueue는 객체화된 작업을 큐에서 취소할 수 있고, 큐에 등록될 최대 작업의 개수를 설정하거나, 작업 간의 `의존성`(어떤 작업이 선행되어야 하는지)에 대한 정보도 설정할 수 있습니다. 즉, DispatchQueue보다 좀 더 고수준의 API를 제공합니다.
+- OperationQueue는 `내부적으로 DispatchQueue`를 이용합니다.
+- OperationQueue는 작업을 한번 객체화 하고 고수준 API를 지원하기 때문에 DispatchQueue보다 더 `많은 리소스를 사용`합니다. 따라서 복잡하고 의존성에 대한 설정이 필요한 작업이 아니라면 DispatchQueue를 사용하는 것이 더 좋을 수도 있습니다.
+
 ## 58. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
 
-## 59. 프로퍼티 옵저버에 대해 설명해보세요.
+- 어떤 클래스의 프로퍼티나 메소드는 다른 자식 클래스로부터 override 될 수 있기 때문에, 이런 override된 메소드는 실제로 어떤 메소드를 실행할지 `vtable`을 한 번 탐색해서 결정하게됩니다. 즉, 컴파일 타임이 아닌 `런타임에 실제로 실행할 메소드가 결정`되는 것입니다. 이를 `dynamic dispatch`라고 합니다.
+- final 키워드를 사용하면 해당 클래스, 프로퍼티, 메소드가 다른 클래스에 의해 상속되고 있지 않다는 것을 컴파일러에게 알려주기 때문에 `컴파일 타임에 어떤 메소드를 사용할지 바로 결정`할 수 있고, vtable을 거치지 않고 직접적으로 호출되기 때문에 성능상 더 좋은 퍼포먼스를 낼 수 있습니다.
+
+## 59. vtable에 대해서 설명해보세요.
+
+- vtable은 `가상 메소드 테이블`로 `컴파일 타임에 생성`되어 메소드가 호출되었을 때 사용할 구현체를 `런타임에 특정`할 수 있게 해줍니다.
+- vtable은 `메소드 구현체의 주소를 배열로` 가지고 있습니다.
+- 클래스마다 `vtable`이 존재합니다.
+
+## 60. 프로퍼티 옵저버에 대해 설명해보세요.
+
+- 프로퍼티 옵저버는 저장 프로퍼티의 값이 `변화하는 것을 관찰`하기 위해 사용합니다.
+- `willSet`과 `didSet`을 사용해서 프로퍼티의 값이 변화할 때 함께 실행할 작업을 정의할 수 있습니다.
+- willSet은 새로 변화될 값을 `newValue`라는 프로퍼티로 제공하고, didSet은 변화되기 전 값을 `oldValue`라는 프로퍼티로 제공합니다.
+
+  ```swift
+  class A {
+    var name: String {
+        willSet {
+            print("\(name) will be changed to \(newValue)")
+        }
+        didSet {
+            print("\(oldValue) is changed to \(name)")
+        }
+    }
+
+    init(name: String) {
+        self.name = name
+    }
+  }
+
+  let a = A(name: "A")
+  a.name = "B"
+  // A will be changed to B
+  // A is changed to B
+  ```
+
+- 연산프로퍼티는 부모 클래스의 연산 프로퍼티를 오버라이딩하는 경우만 프로퍼티 옵저버를 추가할 수 있습니다.
 
 ## 60. Property Wrapper에 대해 설명해보세요.
 
+- 프로퍼티 래퍼는 여러 프로퍼티에 대해 반복되는 코드를 `재사용`할 수 있도록 해주는 기능입니다.
+- `@propertyWrapper`로 구조체를 정의하고 내부에 프로퍼티에 대한 동작을 정의해두면, 프로퍼티를 선언할 때 프로퍼티 래퍼를 키워드로 붙여 미리 정의한 동작을 재사용할 수 있습니다.
+
+  ```swift
+  @propertyWrapper
+  struct TwelveOrLess {
+      private var number = 0
+      var wrappedValue: Int {
+          get { return number }
+          set { number = min(newValue, 12) }
+      }
+  }
+  struct SmallRectangle {
+    @TwelveOrLess var height: Int
+    @TwelveOrLess var width: Int
+  }
+
+  var rectangle = SmallRectangle()
+  print(rectangle.height)
+  // Prints "0"
+
+  rectangle.height = 10
+  print(rectangle.height)
+  // Prints "10"
+
+  rectangle.height = 24
+  print(rectangle.height)
+  // Prints "12"
+  ```
+
+## 61. 고차함수 중 flatMap과 compactMap의 차이를 설명해보세요.
+
+- `compactMap`은 1차원 배열에서 각 요소에 대해 `nil을 제거`하고 `옵셔널 바인딩`을 한 결과를 배열로 만들어 반환합니다.
+- `flatMap`은 1차원 배열에서는 `nil을 제거`하고 `옵셔널 바인딩`을 한 결과를 배열로 만들어 반환합니다.
+- `flatMap`은 2차원 배열에서는 배열의 요소들을 `1차원으로 합친 배열`을 반환하고 nil의 제거와 옵셔널 바인딩은 하지 않습니다.
+
+  ```swift
+  let test = [1, nil, 2, nil, 3, nil]
+  print(test.compactMap({ $0 }))
+  // [1, 2, 3]
+
+  let test = [1, nil, 2, nil, 3, nil]
+  print(test.flatMap({ $0 }))
+  // [1, 2, 3]
+
+  let test = [[1, nil], [2, nil], [3, nil]]
+  print(test.flatMap({ $0 }))
+  // [Optional(1), nil, Optional(2), nil, Optional(3), nil]
+
+  let test = [[1, nil], [2, nil], [3, nil]]
+  print(test.flatMap({ $0 }).compactMap({ $0 }))
+  // [1, 2, 3]
+
+  let test = [[1, nil], [2, nil], [3, nil]]
+  print(test.compactMap({ $0 }).flatMap({ $0 }))
+  // [Optional(1), nil, Optional(2), nil, Optional(3), nil]
+  ```
+
+## 62. High Order Function에 대해서 설명해보세요.
+
+- 고차함수는 함수를 인자로 받는 함수입니다.
+
+  ```swift
+  func test(execution: () -> Void) {
+    execution()
+  }
+  ```
+
+## 63. 함수형 프로그래밍은 무엇인가요? Swift는 함수형 프로그래밍 언어인가요?
+
+- 함수형 프로그램밍은 `순수 함수`를 기반으로 하는 프로그래밍 패러다임입니다. 순수 함수는 어떤 입력에 대해 `항상 같은 출력`을 만드는 함수를 의미합니다. 즉, 외부에 영향을 주거나 받는 `side effect`가 없습니다.
+- 스위프트는 함수형 프로그래밍 언어이면서 동시에 객체 지향 프로그램밍 언어의 특징인 상속, 은닉, 캡슈화, 추상화 등을 제공하는 멀티 패터다임 언어입니다.
+
+## 64. 1급 객체(혹은 1급 시민)에 대해서 설명해보세요. Swift에는 어떤 1급 객체들이 있나요?
+
+- 1급 객체는 `함수의 인자로 전달되거나 반환 값으로 사용할 수 있는` 객체를 의미합니다.
+- 또 1급 객체는` 변수나 상수에 할당` 할 수 있는 객체입니다.
+- 스위프트는 기본 타입들과 함수나 클로저까지 모두 1급 객체에 해당합니다.
+
+## 65. Optional은 내부적으로 어떻게 구현되어 있나요?
+
+- Optional은 associated value를 가지는 `enum`으로 구현되어 있습니다. 값이 존재할 때는 some에 저장된 값을 반환하고, 값이 존재하지 않으면 nil을 반환합니다.
+
+```swift
+@frozen
+enum Optional<Wrapped> {
+  case none
+  case some(Wrapped)
+}
+```
+
+## 66. Swift에서 참조 타입을 말해보세요.
+
+- 클래스, 함수, 클로저가 모두 참조 타입입니다.
+
+## 67. String은 왜 subscript로 접근할 수 없을까요?
+
+- String을 구성하는 각 문자들은 여러문자가 합성된 `Unicode Scalar` 로 이루어져 있습니다. 따라서 한 문자가 같은 크기의 메모리를 가지지 않습니다.
+
+```swift
+// https://docs.swift.org/swift-book/LanguageGuide/StringsAndCharacters.html#//apple_ref/doc/uid/TP40014097-CH7-ID285
+let eAcute: Character = "\u{E9}"                         // é
+let combinedEAcute: Character = "\u{65}\u{301}"          // e followed by ́
+// eAcute is é, combinedEAcute is é
+```
+
+## 68. Result 타입에 대해서 설명해보세요.
+
+- Result는 `success와 failure case` 를 가지는 enum입니다.
+- failure 케이스의 associated value는 반드시 `Error 프로토콜`을 채택해야합니다.
+- 네트워크와 같이 실패할 가능성이 있는 작업의 성공여부와 결과를 쉽게 표현할 수 있습니다.
+
+  ```swift
+  // https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
+  fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
+    switch result {
+    case .success(let count):
+        print("\(count) unread messages.")
+    case .failure(let error):
+        print(error.localizedDescription)
+    }
+  }
+  ```
+
+## 69. some 키워드에 대해서 설명해보세요.
+
+- some은 `opqaue result type`입니다.
+- 함수 내부에서 반환되는 타입을 외부에서 명확하게 알 수 없도록합니다.
+
+```swift
+// Error. 구체타입을 명시하지 않음
+func someList() -> Collection {
+  return [1,2,3]
+}
+
+// OK. 구체타입을 알 수는 없지만 Collection을 채택하는 타입이 반환될 것을 보증함
+func someList() -> some Collection {
+  return [1,2,3]
+}
+```
+
+## 70. KVC에 대해서 설명해보세요.
+
+- KVC는 `Key-Value Coding`으로 객체의 값을 직접 사용하지 않고 KeyPath를 이용해 `간접적`으로 사용하고 수정하는 방법입니다.
+- `{백슬래시(\)}.{타입}.{keypath}` 로 keypath를 만들어 사용할 수도 있습니다.
+
+```swift
+struct A {
+    var data = "Data"
+}
+
+var aInstance = A()
+print(aInstance[keyPath: \.data]) // Data
+print(aInstance.data) // Data
+aInstance[keyPath: \.data] = "Data2"
+print(aInstance[keyPath: \.data]) // Data2
+
+let key = \A.data
+print(aInstance[keyPath: key]) // Data2
+```
+
+## 71. KVO에 대해서 설명해보세요.
+
+- KVO는 `Key-Value Oberving`으로 어떤 Key에 등록된 변수가 변경이 되는 것을 관찰하고 변경이 발생할 때마다 특정한 작업을 수행하기 위해 사용합니다.
+- Objective-C 런타임에 의존하기 때문에 `NSObject`를 채택해야하고, 관찰할 프로퍼티에는 `@objc` 와 `dynamic` 키워드를 붙여야 합니다.
+
+```swift
+class Obj: NSObject {
+    @objc dynamic var data = "Data"
+}
+
+let obj = Obj()
+let observer = obj.observe(\.data, options: [.new, .old]) { _, changeInfo in
+    print("\(changeInfo.oldValue) has been changed to \(changeInfo.newValue)")
+}
+
+obj.data = "Data2"
+// Optional("Data") has been changed to Optional("Data2")
+```
+
 ## Questions Source
 
-https://www.fullstack.cafe/interview-questions/swift
+- https://www.fullstack.cafe/interview-questions/swift
+- https://github.com/JeaSungLEE/iOSInterviewquestions
