@@ -8,17 +8,17 @@
 - 구조체의 경우에는 기존 구조체에서는 생성자를 직접 구현하면 `memberwise initializer`(기본 생성자)가 사라지지만 구조체의 Extension에 생성자를 정의하면 `memberwise initializer`가 사라지지 않습니다.
 - `where`을 사용하면 특정한 조건을 가진 타입에 대해서만 Extension을 적용할 수 있습니다.
 
-  ```swift
-  // https://stackoverflow.com/questions/30746190/swift-where-array-extensions
-  // Idable 프로토콜을 채택하는 타입의 배열만 이 Extension을 사용가능
-  extension Array where Element : Idable {
-      func filterWithId(id : String) -> [Element] {
-          return self.filter { (item) -> Bool in
-              return item.id == id
-          }
-      }
-  }
-  ```
+```swift
+// https://stackoverflow.com/questions/30746190/swift-where-array-extensions
+// Idable 프로토콜을 채택하는 타입의 배열만 이 Extension을 사용가능
+extension Array where Element : Idable {
+    func filterWithId(id : String) -> [Element] {
+        return self.filter { (item) -> Bool in
+            return item.id == id
+        }
+    }
+}
+```
 
 </br>
 
@@ -26,42 +26,42 @@
 
 - 서로 상속 관계에 있는 클래스에서 자식 클래스를 부모 클래스로 타입캐스팅 하는 것을 `업 캐스팅`이라고 하고 `as`를 사용해서 업 캐스팅할 수 있습니다. 컴파일 타임에 업캐스팅이 가능한지 여부가 판별되기 때문에 컴파일이 되면 항상 성공합니다.
 
-  ```swift
-    class Student {
-        let name: String
+```swift
+  class Student {
+      let name: String
 
-        init(name: String) {
-            self.name = name
-        }
-    }
+      init(name: String) {
+          self.name = name
+      }
+  }
 
-    class HighSchoolStudent: Student {
-        let gpa: Double
+  class HighSchoolStudent: Student {
+      let gpa: Double
 
-        init(name: String, gpa: Double) {
-            self.gpa = gpa
-            super.init(name: name)
-        }
-    }
+      init(name: String, gpa: Double) {
+          self.gpa = gpa
+          super.init(name: name)
+      }
+  }
 
-    let hun = HighSchoolStudent(name: "hun", gpa: 4.5)
-    let updacasted = hun as Student
+  let hun = HighSchoolStudent(name: "hun", gpa: 4.5)
+  let updacasted = hun as Student
 
-    print(hun.name, hun.gpa)
-    print(updacasted.name, updacasted.gpa) // compile error
-  ```
+  print(hun.name, hun.gpa)
+  print(updacasted.name, updacasted.gpa) // compile error
+```
 
 - 다운캐스팅도 as 를 사용하지만 다운 캐스팅은 실패할 수도 있기 때문에 `as?`나 `as!`를 사용합니다.
 - `as!`는 런타임에 타입 캐스팅을 하고 만약 타입 캐스팅에 실패하면 `런타임 에러`를 발생시킵니다.
 - `as?`는 런타임에 타입 캐스팅을 하고 만약 타입 캐스팅에 실패하면 `nil`을 반환합니다.
 
-  ```swift
-  let donwcastedHun = hun as? HighSchoolStudent
-  print(donwcastedHun) // nil
+```swift
+let donwcastedHun = hun as? HighSchoolStudent
+print(donwcastedHun) // nil
 
-  let forcelyDowncCastedHun = hun as! HighSchoolStudent // runtime error
-  print(forcelyDowncCastedHun)
-  ```
+let forcelyDowncCastedHun = hun as! HighSchoolStudent // runtime error
+print(forcelyDowncCastedHun)
+```
 
 </br>
 
@@ -82,12 +82,12 @@
 - `let`은 한번 할당된 값을 변경할 수 없는 상수를 선언하기 위한 명령어이고, `var`는 값을 변경할 수 있는 변수를 선언하기 위한 명령어입니다.
 - 사실 Obejctive-C 관점에서 `let`은 주소에 대한 포인터를 바꿀 수 없다는 의미입니다. 이 때문에 클래스 인스턴스의 var로 선언된 변수의 값을 바꾸는 것은 가능합니다.
 
-  ```swift
-  let hun = Student(name: "hun")
-  hun.name = "hunihun965"
+```swift
+let hun = Student(name: "hun")
+hun.name = "hunihun965"
 
-  print(hun.name) // hunihun956
-  ```
+print(hun.name) // hunihun956
+```
 
 </br>
 
@@ -101,23 +101,23 @@
 
 - sorted 메서드에 직접 소팅 클로저를 지정해줄 수 있습니다.
 
-  ```swift
-  struct Node {
-      let id: Int
-  }
+```swift
+struct Node {
+    let id: Int
+}
 
-  let array = [
-      Node(id: 5),
-      Node(id: 4),
-      Node(id: 3),
-      Node(id: 2),
-      Node(id: 1)
-  ]
+let array = [
+    Node(id: 5),
+    Node(id: 4),
+    Node(id: 3),
+    Node(id: 2),
+    Node(id: 1)
+]
 
-  let sorted = array.sorted(by: { $0.id < $1.id })
-  print(sorted)
-  // [PS.Node(id: 1), PS.Node(id: 2), PS.Node(id: 3), PS.Node(id: 4), PS.Node(id: 5)]
-  ```
+let sorted = array.sorted(by: { $0.id < $1.id })
+print(sorted)
+// [PS.Node(id: 1), PS.Node(id: 2), PS.Node(id: 3), PS.Node(id: 4), PS.Node(id: 5)]
+```
 
 </br>
 
@@ -140,28 +140,28 @@
 - `raw value`는 원시값으로 열거형의 모든 case들이 동일한 타입을 가지고 하나의 값만 가질 수 있습니다.
 - 반면에 `associated value`는 튜플을 통해 각 case들이 다른 타입을 가지게 할 수도 있고, named tuple로 이름을 붙일 수도 있으며, 여러개의 값을 가지게 하는 것도 가능합니다.
 
-  ```swift
-  // associated values
-  enum Fruits {
-  case apple(origin: String, cost: Double)
-  case grape(origin: String, cost: Double, size: Double)
-  case orange(color: String)
-  }
+```swift
+// associated values
+enum Fruits {
+case apple(origin: String, cost: Double)
+case grape(origin: String, cost: Double, size: Double)
+case orange(color: String)
+}
 
-  let apple: Fruits = .apple(origin: "Korea", cost: 1000)
-  let grape: Fruits = .grape(origin: "Korea", cost: 100, size: 10)
-  let orange: Fruits = .orange(color: "Orange")
+let apple: Fruits = .apple(origin: "Korea", cost: 1000)
+let grape: Fruits = .grape(origin: "Korea", cost: 100, size: 10)
+let orange: Fruits = .orange(color: "Orange")
 
-  // raw values
-  enum Numbers: Int {
-  case one = 1
-  case two, three, four
-  }
+// raw values
+enum Numbers: Int {
+case one = 1
+case two, three, four
+}
 
-  print(Numbers.one.rawValue)   // 1
-  print(Numbers.two.rawValue)   // 2
-  print(Numbers.three.rawValue) // 3
-  ```
+print(Numbers.one.rawValue)   // 1
+print(Numbers.two.rawValue)   // 2
+print(Numbers.three.rawValue) // 3
+```
 
 </br>
 
@@ -235,25 +235,25 @@
 - `self`는 현재 인스턴스를 가리킵니다.
 - `Self`는 프로토콜에서 사용되면 프로토콜을 채택하는 타입을 의미하고, 클래스, 구조체, 열거형에서 사용되면 실제 선언에 사용된 타입을 의미합니다.
 
-  ```swift
-  class Superclass {
-  func f() -> Self { return self }
-  }
-  let x = Superclass()
-  print(type(of: x.f()))
-  // Prints "Superclass"
+```swift
+class Superclass {
+func f() -> Self { return self }
+}
+let x = Superclass()
+print(type(of: x.f()))
+// Prints "Superclass"
 
-  class Subclass: Superclass { }
-  let y = Subclass()
-  print(type(of: y.f()))
-  // Prints "Subclass"
+class Subclass: Superclass { }
+let y = Subclass()
+print(type(of: y.f()))
+// Prints "Subclass"
 
-  let z: Superclass = Subclass()
-  print(type(of: z.f()))
-  // Prints "Subclass"
-  ```
+let z: Superclass = Subclass()
+print(type(of: z.f()))
+// Prints "Subclass"
+```
 
-  -> MetaType에 대한 공부가 필요할 것 같습니다ㅠ 헷갈리네요..
+-> MetaType에 대한 공부가 필요할 것 같습니다ㅠ 헷갈리네요..
 
 </br>
 
@@ -269,23 +269,23 @@
 - 함수의 인자로 들어갈 클로저를 함수 호출 외부로 분리해서 코드를 작성하는 방법입니다.
 - trailing closure의 파라미터 레이블을 생략할 수 있고, 만약 호출하는 함수의 파라미터가 클로저 뿐이라면 `()` 도 생략할 수 있습니다.
 
-  ```swift
-  func someFunctionThatTakesAClosure(closure: () -> Void) {
-  // function body goes here
-  }
+```swift
+func someFunctionThatTakesAClosure(closure: () -> Void) {
+// function body goes here
+}
 
-  // Here's how you call this function without using a trailing closure:
+// Here's how you call this function without using a trailing closure:
 
-  someFunctionThatTakesAClosure(closure: {
-      // closure's body goes here
-  })
+someFunctionThatTakesAClosure(closure: {
+    // closure's body goes here
+})
 
-  // Here's how you call this function with a trailing closure instead:
+// Here's how you call this function with a trailing closure instead:
 
-  someFunctionThatTakesAClosure() {
-      // trailing closure's body goes here
-  }
-  ```
+someFunctionThatTakesAClosure() {
+    // trailing closure's body goes here
+}
+```
 
 </br>
 
@@ -313,86 +313,86 @@
 
 - `defer`는 클로저에 정의된 코드가 읽어진 이후에 함수가 끝나기 전 마지막에 실행되도록 합니다.
 
-  ```swift
-  func deferTest() {
-      print(1)
-      defer {
-          print("last")
-      }
-      print(2)
-  }
+```swift
+func deferTest() {
+    print(1)
+    defer {
+        print("last")
+    }
+    print(2)
+}
 
-  deferTest()
-  // 1
-  // 2
-  // last
-  ```
+deferTest()
+// 1
+// 2
+// last
+```
 
 - defer 코드가 실행되지 않으면 함수가 끝나도 클로저는 실행되지 않습니다.
 
-  ```swift
-  func deferTest() {
-      print(1)
-      return
-      defer {
-          print("last")
-      }
-      print(2)
-  }
+```swift
+func deferTest() {
+    print(1)
+    return
+    defer {
+        print("last")
+    }
+    print(2)
+}
 
-  deferTest()
-  // 1
-  ```
+deferTest()
+// 1
+```
 
 - 여러개의 defer가 실행되었다면 읽혀진 역순으로 실행됩니다.
 
-  ```swift
-  func deferTest() {
-      print(1)
-      defer {
-          print("last1")
-      }
-      defer {
-          print("last2")
-      }
-      defer {
-          print("last3")
-      }
-      print(2)
-  }
+```swift
+func deferTest() {
+    print(1)
+    defer {
+        print("last1")
+    }
+    defer {
+        print("last2")
+    }
+    defer {
+        print("last3")
+    }
+    print(2)
+}
 
-  deferTest()
-  // 1
-  // 2
-  // last3
-  // last2
-  // last1
-  ```
+deferTest()
+// 1
+// 2
+// last3
+// last2
+// last1
+```
 
 - 중첩된 defer는 바깥쪽 defer 부터 실행됩니다.
 
-  ```swift
-  func deferTest() {
-      print(1)
-      defer {
-          print("last1")
-          defer {
-              print("last2")
-              defer {
-                  print("last3")
-              }
-          }
-      }
-      print(2)
-  }
+```swift
+func deferTest() {
+    print(1)
+    defer {
+        print("last1")
+        defer {
+            print("last2")
+            defer {
+                print("last3")
+            }
+        }
+    }
+    print(2)
+}
 
-  deferTest()
-  // 1
-  // 2
-  // last1
-  // last2
-  // last3
-  ```
+deferTest()
+// 1
+// 2
+// last1
+// last2
+// last3
+```
 
 </br>
 
@@ -418,19 +418,19 @@
 
 - fileprivate은 같은 파일 내부에 있다면 접근을 허용했지만 private은 같은 파일에 있어도 private으로 선언한 대상의 `구현부 내부`, 그리고 같은 파일에 있는 `동일한 선언의 Extension` 에서의 접근만 허용합니다.
 
-  ```swift
-  private class A {
-    public init() {}
-    private var data: String
-  }
+```swift
+private class A {
+  public init() {}
+  private var data: String
+}
 
-  extension A { // 같은 파일에 있을 때만 가능
-    func updateData(data: String) {
-      self.data = data
-    }
+extension A { // 같은 파일에 있을 때만 가능
+  func updateData(data: String) {
+    self.data = data
   }
+}
 
-  ```
+```
 
 </br>
 
@@ -520,21 +520,21 @@ class CreditCard {
 
 - unowned로 선언된 변수가 참조하는 인스턴스가 해당 unowned 변수가 해제된 이후에 해제되는 것이 보장되는 상황에서 사용하는 것이 안전합니다.
 
-  ```swift
-  // https://www.advancedswift.com/strong-weak-unowned-in-swift/
-  extension HomeVC {
-      // Calling loadAPI no longer creates a Retain Cycle:
-      // 1. Self (HomeVC) has a strong reference to api
-      // 2. api has a strong reference to completion
-      // 3. completion has a unowned reference to self (HomeVC)
-      func loadAPI() {
-          api.completion = { [unowned self] (data, error) in
-              self.hideLoadingIndicator()
-          }
-      }
-      // HomeVC -> api -> completion === (unonwned) ===> HomeVC
-  }
-  ```
+```swift
+// https://www.advancedswift.com/strong-weak-unowned-in-swift/
+extension HomeVC {
+    // Calling loadAPI no longer creates a Retain Cycle:
+    // 1. Self (HomeVC) has a strong reference to api
+    // 2. api has a strong reference to completion
+    // 3. completion has a unowned reference to self (HomeVC)
+    func loadAPI() {
+        api.completion = { [unowned self] (data, error) in
+            self.hideLoadingIndicator()
+        }
+    }
+    // HomeVC -> api -> completion === (unonwned) ===> HomeVC
+}
+```
 
 </br>
 
@@ -543,26 +543,26 @@ class CreditCard {
 - COW는 값 타입의 복사를 `실제로 값이 수정되기 전까지는 발생시키지 않아 메모리 사용을 최적화`하는 방법입니다. 예를 들어서 값타입인 배열을 두 변수에 저장해두면 두 개의 다른 인스턴스가 생성될 것을 기대하지만 실제로는 주소 값을 공유하고 있다가 변수에 변경사항이 생겼을 때 새로운 인스턴스를 할당합니다.
 - 이렇게 하면 수정이 일어나지 않는 값 타입 데이터는 복사본을 만들지 않고 사용되기 때문에 메모리 사용을 최적화할 수 있습니다.
 
-  ```swift
-  import Foundation
+```swift
+import Foundation
 
-  func compareValueTypeInstance(of arr1:[Int], with arr2:[Int]) {
-      if arr1 == arr2 {
-          print("same instance")
-      } else {
-          print("different istance")
-      }
-  }
+func compareValueTypeInstance(of arr1:[Int], with arr2:[Int]) {
+    if arr1 == arr2 {
+        print("same instance")
+    } else {
+        print("different istance")
+    }
+}
 
-  let arr1 = [1, 2, 3, 4]
-  var arr2 = arr1
+let arr1 = [1, 2, 3, 4]
+var arr2 = arr1
 
-  compareValueTypeInstance(of: arr1, with: arr2) // "same instance"
+compareValueTypeInstance(of: arr1, with: arr2) // "same instance"
 
-  arr2.append(5)
+arr2.append(5)
 
-  compareValueTypeInstance(of: arr1, with: arr2) // "different istance"
-  ```
+compareValueTypeInstance(of: arr1, with: arr2) // "different istance"
+```
 
 </br>
 
@@ -591,64 +591,64 @@ class CreditCard {
 - autoclosure는 클로저가 아닌 코드를 함수의 인자로 받을 때 이 `코드를 클로저로` 만들어주는 키워드입니다.
 - autoclosure의 주된 목적은 코드의 `실행을 지연`시키기 위함입니다. 클로저를 인자를 넘기는 것으로도 지연 실행을 만족시킬 수 있지만 autoclosure를 사용하면 호출하는 측 코드의 가독성이 좋아집니다.
 
-  - 클로저 사용 X
+- 클로저 사용 X
 
-  ```swift
-  // https://www.avanderlee.com/swift/autoclosure/
+```swift
+// https://www.avanderlee.com/swift/autoclosure/
 
-   struct Person: CustomStringConvertible {
-     let name: String
+ struct Person: CustomStringConvertible {
+   let name: String
 
-     var description: String {
-         print("Asking for Person description.")
-         return "Person name is \(name)"
-     }
-  }
+   var description: String {
+       print("Asking for Person description.")
+       return "Person name is \(name)"
+   }
+}
 
-  let isDebuggingEnabled: Bool = false
+let isDebuggingEnabled: Bool = false
 
-  func debugLog(_ message: String) {
-      /// You could replace this in projects with #if DEBUG
-      if isDebuggingEnabled {
-          print("[DEBUG] \(message)")
-      }
-  }
+func debugLog(_ message: String) {
+    /// You could replace this in projects with #if DEBUG
+    if isDebuggingEnabled {
+        print("[DEBUG] \(message)")
+    }
+}
 
-  let person = Person(name: "Bernie")
-  debugLog(person.description) // 디버깅 모드가 아니어도 person.description이 실행됨
-  ```
+let person = Person(name: "Bernie")
+debugLog(person.description) // 디버깅 모드가 아니어도 person.description이 실행됨
+```
 
-  - 클로저 사용
+- 클로저 사용
 
-  ```swift
-   let isDebuggingEnabled: Bool = false
+```swift
+ let isDebuggingEnabled: Bool = false
 
-  func debugLog(_ message: () -> String) {
-      /// You could replace this in projects with #if DEBUG
-      if isDebuggingEnabled {
-          print("[DEBUG] \(message())")
-      }
-  }
+func debugLog(_ message: () -> String) {
+    /// You could replace this in projects with #if DEBUG
+    if isDebuggingEnabled {
+        print("[DEBUG] \(message())")
+    }
+}
 
-  let person = Person(name: "Bernie")
-  debugLog({ person.description }) // 클로저가 넘어가기 때문에 description 참조가 실행되지 않음
-  ```
+let person = Person(name: "Bernie")
+debugLog({ person.description }) // 클로저가 넘어가기 때문에 description 참조가 실행되지 않음
+```
 
-  - autoclosure 사용
+- autoclosure 사용
 
-  ```swift
-   let isDebuggingEnabled: Bool = false
+```swift
+ let isDebuggingEnabled: Bool = false
 
-  func debugLog(_ message: @autoclosure () -> String) {
-      /// You could replace this in projects with #if DEBUG
-      if isDebuggingEnabled {
-          print("[DEBUG] \(message())")
-      }
-  }
+func debugLog(_ message: @autoclosure () -> String) {
+    /// You could replace this in projects with #if DEBUG
+    if isDebuggingEnabled {
+        print("[DEBUG] \(message())")
+    }
+}
 
-  let person = Person(name: "Bernie")
-  debugLog(person.description) // 클로저로 래핑되면서 들어가기 때문에 description 참조가 실행되지 않음
-  ```
+let person = Person(name: "Bernie")
+debugLog(person.description) // 클로저로 래핑되면서 들어가기 때문에 description 참조가 실행되지 않음
+```
 
 </br>
 
@@ -658,11 +658,11 @@ class CreditCard {
 - 우선순위가 높은 작업은 우선순위가 낮은 작업보다 먼저 실행되지만 앱의 리소스를 많이 사용합니다.
 - qos 수준은 다음으로 정의됩니다.
 
-  - `userInterative`: 가장 우선순위가 높습니다. UI작업 등 사용자에게 즉각적인 반응을 해야하는 작업에 사용합니다.
-  - `userInitiated`: 문서를 열람하거나 인터페이스에 제스쳐를 취하는 등 사용자와의 상호작용이 시작되었을 때 곧바로 결과를 반환해야 하는 작업에 사용합니다.
-  - `default`: 기본값입니다. 일반적인 작업에 사용합니다.
-  - `utility`: 데이터를 다룬로드 하는 등 결과를 만들기 위해 시간이 걸리는 작업에 사용합니다. 프로그래스 바나 액티비티 인디케이터와 함께 사용합니다.
-  - `background`: 사용자가 인지하지 못하는 영역에서 에너지와 리소스를 효율적으로 사용하기 위해 사용합니다.
+- `userInterative`: 가장 우선순위가 높습니다. UI작업 등 사용자에게 즉각적인 반응을 해야하는 작업에 사용합니다.
+- `userInitiated`: 문서를 열람하거나 인터페이스에 제스쳐를 취하는 등 사용자와의 상호작용이 시작되었을 때 곧바로 결과를 반환해야 하는 작업에 사용합니다.
+- `default`: 기본값입니다. 일반적인 작업에 사용합니다.
+- `utility`: 데이터를 다룬로드 하는 등 결과를 만들기 위해 시간이 걸리는 작업에 사용합니다. 프로그래스 바나 액티비티 인디케이터와 함께 사용합니다.
+- `background`: 사용자가 인지하지 못하는 영역에서 에너지와 리소스를 효율적으로 사용하기 위해 사용합니다.
 
 </br>
 
@@ -673,24 +673,24 @@ class CreditCard {
 - Hashable 프로토콜을 채택하는 커스텀 타입의 `저장 프로퍼티가 모두` Hashable 프로토콜을 채택하고 있다면, 별다른 구현없이 Hashable 프로토콜을 채택하는 것 만으로 Hashable한 동작을 제공합니다.
 - 그렇지 않다면 `==` 메서드를 만들고 hash(into:) 구현해서 해시값을 생성하는데 필요한 프로퍼티를 지정해주어야합니다.
 
-  ```swift
-  // https://developer.apple.com/documentation/swift/hashable
-  struct GridPoint {
-    var x: Int
-    var y: Int
+```swift
+// https://developer.apple.com/documentation/swift/hashable
+struct GridPoint {
+  var x: Int
+  var y: Int
+}
+
+extension GridPoint: Hashable {
+  static func == (lhs: GridPoint, rhs: GridPoint) -> Bool {
+      return lhs.x == rhs.x && lhs.y == rhs.y
   }
 
-  extension GridPoint: Hashable {
-    static func == (lhs: GridPoint, rhs: GridPoint) -> Bool {
-        return lhs.x == rhs.x && lhs.y == rhs.y
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(x)
-        hasher.combine(y)
-    }
+  func hash(into hasher: inout Hasher) {
+      hasher.combine(x)
+      hasher.combine(y)
   }
-  ```
+}
+```
 
 </br>
 
@@ -703,19 +703,19 @@ class CreditCard {
 
 - init?()은 `실패가능한 생성자`로 생성자의 코드를 실행하다가 문제가 생겼을 때 nil을 반환하도록 할 수 있습니다.
 
-  ```swift
-  class A {
-    let a: String
+```swift
+class A {
+  let a: String
 
-    init?(a: String) {
-        guard !a.isEmpty else { return nil }
-        self.a = a
-    }
+  init?(a: String) {
+      guard !a.isEmpty else { return nil }
+      self.a = a
   }
+}
 
-  print(A(a: ""))
-  print(A(a: "abc")?.a)
-  ```
+print(A(a: ""))
+print(A(a: "abc")?.a)
+```
 
 </br>
 
@@ -724,11 +724,11 @@ class CreditCard {
 - Never 타입은 `비정상적인 종료`에 사용되는 반환 타입이며 값을 지니지는 않습니다.
 - 클로저, 함수에 에러를 throw하는 것으로 잡을 수 없는 심각한 오류가 있음을 알릴 때 사용할 수 있습니다.
 
-  ```swift
-  func crashAndBurn() -> Never {
-      fatalError("Something very, very bad happened")
-  }
-  ```
+```swift
+func crashAndBurn() -> Never {
+    fatalError("Something very, very bad happened")
+}
+```
 
 </br>
 
@@ -743,68 +743,68 @@ class CreditCard {
 
 - ARC는 강한 순환 참조 상황에서 인스턴스를 해제하지 못하는 문제가 있습니다. 만약 어떤 두 클래스 인스턴스가 프로퍼티에 서로를 `강함 참조`로 저장하고 있을 때 `강한 순환 참조`가 발생할 수 있습니다.
 
-  - 순환참조 발생
+- 순환참조 발생
 
-  ```swift
-  class A {
-    var b: B?
+```swift
+class A {
+  var b: B?
+
+  deinit {
+      print("A deinitialzied")
+  }
+}
+
+class B {
+    var a: A?
 
     deinit {
-        print("A deinitialzied")
+        print("B deinitialzied")
     }
+}
+
+var a = A()
+var b = B()
+
+a.b = b
+b.a = a
+
+a = A()
+b = B()
+
+// retain cycle
+```
+
+- weak로 순환참조 회피
+
+```swift
+class A {
+  var b: B?
+
+  deinit {
+      print("A deinitialzied")
   }
+}
 
-  class B {
-      var a: A?
-
-      deinit {
-          print("B deinitialzied")
-      }
-  }
-
-  var a = A()
-  var b = B()
-
-  a.b = b
-  b.a = a
-
-  a = A()
-  b = B()
-
-  // retain cycle
-  ```
-
-  - weak로 순환참조 회피
-
-  ```swift
-  class A {
-    var b: B?
+class B {
+    var a: A?
 
     deinit {
-        print("A deinitialzied")
+        print("B deinitialzied")
     }
-  }
+}
 
-  class B {
-      var a: A?
+var a = A()
+var b = B()
 
-      deinit {
-          print("B deinitialzied")
-      }
-  }
+a.b = b
+b.a = a
 
-  var a = A()
-  var b = B()
+a = A()
+b = B()
 
-  a.b = b
-  b.a = a
-
-  a = A()
-  b = B()
-
-  // B deinitialzied
-  // A deinitialzied
-  ```
+// B deinitialzied
+// A deinitialzied
+```
 
 </br>
 
@@ -815,30 +815,30 @@ class CreditCard {
 - 작업의 개수가 0이되면 `notify` 메서드가 실행되면서 모든 작업이 끝났을 때에 대한 처리를 수행할 수 있습니다.
 - enter, leave, notoify를 이용해서 여러개의 비동기 작업들이 전부 끝날 때 작업을 수행하게 할 수도 있습니다.
 
-  ```swift
-  // https://stackoverflow.com/questions/49376157/swift-dispatchgroup-notify-before-task-finish
-  let group = DispatchGroup()
-  let queueImage = DispatchQueue(label: "com.image")
-  let queueVideo = DispatchQueue(label: "com.video")
+```swift
+// https://stackoverflow.com/questions/49376157/swift-dispatchgroup-notify-before-task-finish
+let group = DispatchGroup()
+let queueImage = DispatchQueue(label: "com.image")
+let queueVideo = DispatchQueue(label: "com.video")
 
-  group.enter()
-  queueImage.async(group: group) {
-      sleep(2)
-      print("image")
-      group.leave()
-  }
+group.enter()
+queueImage.async(group: group) {
+    sleep(2)
+    print("image")
+    group.leave()
+}
 
-  group.enter()
-  queueVideo.async(group: group) {
-      sleep(3)
-      print("video")
-      group.leave()
-  }
+group.enter()
+queueVideo.async(group: group) {
+    sleep(3)
+    print("video")
+    group.leave()
+}
 
-  group.notify(queue: .main) {
-      print("all finished.")
-  }
-  ```
+group.notify(queue: .main) {
+    print("all finished.")
+}
+```
 
 </br>
 
@@ -846,37 +846,37 @@ class CreditCard {
 
 - DispatchWorkItem을 사용하면 DispatchQueue에 등록할 작업을 `캡슐화`할 수 있습니다.
 
-  ```swift
-  let queue = DispatchQueue(label: "custom")
-  let workItem = DispatchWorkItem {
-    print("task is running")
-  }
-  queue.async(execute: workItem)
-  ```
+```swift
+let queue = DispatchQueue(label: "custom")
+let workItem = DispatchWorkItem {
+  print("task is running")
+}
+queue.async(execute: workItem)
+```
 
 - DispatchWorkItem을 사용하면 `cancel`, `wait` 등 제공되는 메서드를 사용해서 쉽게 작업에 대한 동작을 지정할 수 있습니다.
 
-  ```swift
-  class SearchViewController: UIViewController, UISearchBarDelegate {
-    // We keep track of the pending work item as a property
-    private var pendingRequestWorkItem: DispatchWorkItem?
+```swift
+class SearchViewController: UIViewController, UISearchBarDelegate {
+  // We keep track of the pending work item as a property
+  private var pendingRequestWorkItem: DispatchWorkItem?
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // Cancel the currently pending item
-        pendingRequestWorkItem?.cancel()
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+      // Cancel the currently pending item
+      pendingRequestWorkItem?.cancel()
 
-        // Wrap our request in a work item
-        let requestWorkItem = DispatchWorkItem { [weak self] in
-            self?.resultsLoader.loadResults(forQuery: searchText)
-        }
+      // Wrap our request in a work item
+      let requestWorkItem = DispatchWorkItem { [weak self] in
+          self?.resultsLoader.loadResults(forQuery: searchText)
+      }
 
-        // Save the new work item and execute it after 250 ms
-        pendingRequestWorkItem = requestWorkItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250),
-                                      execute: requestWorkItem)
-    }
+      // Save the new work item and execute it after 250 ms
+      pendingRequestWorkItem = requestWorkItem
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250),
+                                    execute: requestWorkItem)
   }
-  ```
+}
+```
 
 </br>
 
@@ -893,20 +893,20 @@ class CreditCard {
 
 - @escaping은 함수의 인자로 전달된 클로저를 함수가 종료된 후에 실행될 수 있도록 하는 속성입니다.
 
-  ```swift
-  func completionTest(completion: @escaping () -> Void) {
-    DispatchQueue.global().async {
-        completion()
-    }
-    print("1")
+```swift
+func completionTest(completion: @escaping () -> Void) {
+  DispatchQueue.global().async {
+      completion()
   }
+  print("1")
+}
 
-  completionTest {
-      print("end")
-  }
-  // 1
-  // end
-  ```
+completionTest {
+    print("end")
+}
+// 1
+// end
+```
 
 </br>
 
@@ -915,10 +915,14 @@ class CreditCard {
 - dynamic을 통해 선언된 멤버변수나 객체는 Objective-C를 사용해서 동`적으로 디스패치`됩니다. 동적 디스패치는 런타임에 클래스가 연관 클래스들의 메서드 구현체들 중 어떤 클래스의 구현체를 사용하지 결정하는 것을 의미합니다.
 - @objc는 `스위프트의 API를 Objective-C에서` 사용할 수 있도록 하는 속성이니다.
 
+</br>
+
 ## 54. Extension은 메서드를 Override 할 수 있을까요?
 
 - Extension에서는 메서드를 `override 할 수 없습니다`.
 - Extension은 `새로운 함수`를 추가하기 위한 기능이지 기존 함수를 대체하기 위한 기능은 아닙니다.
+
+</br>
 
 ## 55. RunLoop에 대해서 설명해보세요.
 
@@ -927,35 +931,39 @@ class CreditCard {
 - RunLoop를 실행하면 실행되는 동안 도착한 `EventSource`(input source, timer source)를 실행합니다.
 - RunLoop는 `한 번만` 실행되고 실행이 끝나면 대기상태로 돌아갑니다.
 
+</br>
+
 ## 56. autoreleasepool에 대해서 설명해보세요.
 
 - autorelease는 참조 카운트의 감소를 `즉시하지 않고 예약`을 할 수 있게하는 키워드입니다. 예약된 release는 autoreleasepool에 등록되고, `autoreleasepool 인스턴스가 해제되면` 등록되어 있던 예약된 release들이 모두 실행됩니다.
 - 만약 함수가 끝나기 전에 메모리에서 해제되어야 하는 인스턴스가 있다면 autorelease pool로 명시적으로 인스턴스의 참조 카운트를 줄여줄 수 있습니다.
 
-  ```swift
-  func useManyImages() {
-    let filename = pathForResourceInBundle
+```swift
+func useManyImages() {
+  let filename = pathForResourceInBundle
 
-    for _ in 0 ..< 5 {
-        for _ in 0 ..< 1000 {
-            let image = UIImage(contentsOfFile: filename) // 5000개 생성
-        }
-    }
-    // 5000개 해제
+  for _ in 0 ..< 5 {
+      for _ in 0 ..< 1000 {
+          let image = UIImage(contentsOfFile: filename) // 5000개 생성
+      }
   }
+  // 5000개 해제
+}
 
-  func useManyImages() {
-    let filename = pathForResourceInBundle
+func useManyImages() {
+  let filename = pathForResourceInBundle
 
-    for _ in 0 ..< 5 {
-      autoreleasepool {
-        for _ in 0 ..< 1000 {
-            let image = UIImage(contentsOfFile: filename) // 1000개 생성
-        }
-      } // 1000개 해제
-    }
+  for _ in 0 ..< 5 {
+    autoreleasepool {
+      for _ in 0 ..< 1000 {
+          let image = UIImage(contentsOfFile: filename) // 1000개 생성
+      }
+    } // 1000개 해제
   }
-  ```
+}
+```
+
+</br>
 
 ## 57. OperationQueue에 대해서 설명해보세요. DispatchQueue와는 어떤 것이 다른가요?
 
@@ -963,10 +971,14 @@ class CreditCard {
 - OperationQueue는 `내부적으로 DispatchQueue`를 이용합니다.
 - OperationQueue는 작업을 한번 객체화 하고 고수준 API를 지원하기 때문에 DispatchQueue보다 더 `많은 리소스를 사용`합니다. 따라서 복잡하고 의존성에 대한 설정이 필요한 작업이 아니라면 DispatchQueue를 사용하는 것이 더 좋을 수도 있습니다.
 
+</br>
+
 ## 58. final 키워드를 클래스 앞에 붙이면 어떤 효과가 있을까요?
 
 - 어떤 클래스의 프로퍼티나 메소드는 다른 자식 클래스로부터 override 될 수 있기 때문에, 이런 override된 메소드는 실제로 어떤 메소드를 실행할지 `vtable`을 한 번 탐색해서 결정하게됩니다. 즉, 컴파일 타임이 아닌 `런타임에 실제로 실행할 메소드가 결정`되는 것입니다. 이를 `dynamic dispatch`라고 합니다.
 - final 키워드를 사용하면 해당 클래스, 프로퍼티, 메소드가 다른 클래스에 의해 상속되고 있지 않다는 것을 컴파일러에게 알려주기 때문에 `컴파일 타임에 어떤 메소드를 사용할지 바로 결정`할 수 있고, vtable을 거치지 않고 직접적으로 호출되기 때문에 성능상 더 좋은 퍼포먼스를 낼 수 있습니다.
+
+</br>
 
 ## 59. vtable에 대해서 설명해보세요.
 
@@ -974,67 +986,73 @@ class CreditCard {
 - vtable은 `메소드 구현체의 주소를 배열로` 가지고 있습니다.
 - 클래스마다 `vtable`이 존재합니다.
 
+</br>
+
 ## 60. 프로퍼티 옵저버에 대해 설명해보세요.
 
 - 프로퍼티 옵저버는 저장 프로퍼티의 값이 `변화하는 것을 관찰`하기 위해 사용합니다.
 - `willSet`과 `didSet`을 사용해서 프로퍼티의 값이 변화할 때 함께 실행할 작업을 정의할 수 있습니다.
 - willSet은 새로 변화될 값을 `newValue`라는 프로퍼티로 제공하고, didSet은 변화되기 전 값을 `oldValue`라는 프로퍼티로 제공합니다.
 
-  ```swift
-  class A {
-    var name: String {
-        willSet {
-            print("\(name) will be changed to \(newValue)")
-        }
-        didSet {
-            print("\(oldValue) is changed to \(name)")
-        }
-    }
-
-    init(name: String) {
-        self.name = name
-    }
+```swift
+class A {
+  var name: String {
+      willSet {
+          print("\(name) will be changed to \(newValue)")
+      }
+      didSet {
+          print("\(oldValue) is changed to \(name)")
+      }
   }
 
-  let a = A(name: "A")
-  a.name = "B"
-  // A will be changed to B
-  // A is changed to B
-  ```
+  init(name: String) {
+      self.name = name
+  }
+}
+
+let a = A(name: "A")
+a.name = "B"
+// A will be changed to B
+// A is changed to B
+```
 
 - 연산프로퍼티는 부모 클래스의 연산 프로퍼티를 오버라이딩하는 경우만 프로퍼티 옵저버를 추가할 수 있습니다.
+
+</br>
 
 ## 60. Property Wrapper에 대해 설명해보세요.
 
 - 프로퍼티 래퍼는 여러 프로퍼티에 대해 반복되는 코드를 `재사용`할 수 있도록 해주는 기능입니다.
 - `@propertyWrapper`로 구조체를 정의하고 내부에 프로퍼티에 대한 동작을 정의해두면, 프로퍼티를 선언할 때 프로퍼티 래퍼를 키워드로 붙여 미리 정의한 동작을 재사용할 수 있습니다.
 
-  ```swift
-  @propertyWrapper
-  struct TwelveOrLess {
-      private var number = 0
-      var wrappedValue: Int {
-          get { return number }
-          set { number = min(newValue, 12) }
-      }
-  }
-  struct SmallRectangle {
-    @TwelveOrLess var height: Int
-    @TwelveOrLess var width: Int
-  }
+```swift
+@propertyWrapper
+struct TwelveOrLess {
+    private var number = 0
+    var wrappedValue: Int {
+        get { return number }
+        set { number = min(newValue, 12) }
+    }
+}
+struct SmallRectangle {
+  @TwelveOrLess var height: Int
+  @TwelveOrLess var width: Int
+}
 
-  var rectangle = SmallRectangle()
-  print(rectangle.height)
-  // Prints "0"
+var rectangle = SmallRectangle()
+print(rectangle.height)
+// Prints "0"
 
-  rectangle.height = 10
-  print(rectangle.height)
-  // Prints "10"
+rectangle.height = 10
+print(rectangle.height)
+// Prints "10"
 
-  rectangle.height = 24
-  print(rectangle.height)
-  // Prints "12"
-  ```
+rectangle.height = 24
+print(rectangle.height)
+// Prints "12"
+```
+
+</br>
 
 ## 61. 고차함수 중 flatMap과 compactMap의 차이를 설명해보세요.
 
@@ -1042,42 +1060,48 @@ class CreditCard {
 - `flatMap`은 1차원 배열에서는 `nil을 제거`하고 `옵셔널 바인딩`을 한 결과를 배열로 만들어 반환합니다.
 - `flatMap`은 2차원 배열에서는 배열의 요소들을 `1차원으로 합친 배열`을 반환하고 nil의 제거와 옵셔널 바인딩은 하지 않습니다.
 
-  ```swift
-  let test = [1, nil, 2, nil, 3, nil]
-  print(test.compactMap({ $0 }))
-  // [1, 2, 3]
+```swift
+let test = [1, nil, 2, nil, 3, nil]
+print(test.compactMap({ $0 }))
+// [1, 2, 3]
 
-  let test = [1, nil, 2, nil, 3, nil]
-  print(test.flatMap({ $0 }))
-  // [1, 2, 3]
+let test = [1, nil, 2, nil, 3, nil]
+print(test.flatMap({ $0 }))
+// [1, 2, 3]
 
-  let test = [[1, nil], [2, nil], [3, nil]]
-  print(test.flatMap({ $0 }))
-  // [Optional(1), nil, Optional(2), nil, Optional(3), nil]
+let test = [[1, nil], [2, nil], [3, nil]]
+print(test.flatMap({ $0 }))
+// [Optional(1), nil, Optional(2), nil, Optional(3), nil]
 
-  let test = [[1, nil], [2, nil], [3, nil]]
-  print(test.flatMap({ $0 }).compactMap({ $0 }))
-  // [1, 2, 3]
+let test = [[1, nil], [2, nil], [3, nil]]
+print(test.flatMap({ $0 }).compactMap({ $0 }))
+// [1, 2, 3]
 
-  let test = [[1, nil], [2, nil], [3, nil]]
-  print(test.compactMap({ $0 }).flatMap({ $0 }))
-  // [Optional(1), nil, Optional(2), nil, Optional(3), nil]
-  ```
+let test = [[1, nil], [2, nil], [3, nil]]
+print(test.compactMap({ $0 }).flatMap({ $0 }))
+// [Optional(1), nil, Optional(2), nil, Optional(3), nil]
+```
+
+</br>
 
 ## 62. High Order Function에 대해서 설명해보세요.
 
 - 고차함수는 함수를 인자로 받는 함수입니다.
 
-  ```swift
-  func test(execution: () -> Void) {
-    execution()
-  }
-  ```
+```swift
+func test(execution: () -> Void) {
+  execution()
+}
+```
+
+</br>
 
 ## 63. 함수형 프로그래밍은 무엇인가요? Swift는 함수형 프로그래밍 언어인가요?
 
 - 함수형 프로그램밍은 `순수 함수`를 기반으로 하는 프로그래밍 패러다임입니다. 순수 함수는 어떤 입력에 대해 `항상 같은 출력`을 만드는 함수를 의미합니다. 즉, 외부에 영향을 주거나 받는 `side effect`가 없습니다.
 - 스위프트는 함수형 프로그래밍 언어이면서 동시에 객체 지향 프로그램밍 언어의 특징인 상속, 은닉, 캡슈화, 추상화 등을 제공하는 멀티 패터다임 언어입니다.
+
+</br>
 
 ## 64. 1급 객체(혹은 1급 시민)에 대해서 설명해보세요. Swift에는 어떤 1급 객체들이 있나요?
 
@@ -1097,9 +1121,13 @@ enum Optional<Wrapped> {
 }
 ```
 
+</br>
+
 ## 66. Swift에서 참조 타입을 말해보세요.
 
 - 클래스, 함수, 클로저가 모두 참조 타입입니다.
+
+</br>
 
 ## 67. String은 왜 subscript로 접근할 수 없을까요?
 
@@ -1112,23 +1140,27 @@ let combinedEAcute: Character = "\u{65}\u{301}"          // e followed by ́
 // eAcute is é, combinedEAcute is é
 ```
 
+</br>
+
 ## 68. Result 타입에 대해서 설명해보세요.
 
 - Result는 `success와 failure case` 를 가지는 enum입니다.
 - failure 케이스의 associated value는 반드시 `Error 프로토콜`을 채택해야합니다.
 - 네트워크와 같이 실패할 가능성이 있는 작업의 성공여부와 결과를 쉽게 표현할 수 있습니다.
 
-  ```swift
-  // https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
-  fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
-    switch result {
-    case .success(let count):
-        print("\(count) unread messages.")
-    case .failure(let error):
-        print(error.localizedDescription)
-    }
+```swift
+// https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
+fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
+  switch result {
+  case .success(let count):
+      print("\(count) unread messages.")
+  case .failure(let error):
+      print(error.localizedDescription)
   }
-  ```
+}
+```
+
+</br>
 
 ## 69. some 키워드에 대해서 설명해보세요.
 
@@ -1146,6 +1178,8 @@ func someList() -> some Collection {
   return [1,2,3]
 }
 ```
+
+</br>
 
 ## 70. KVC에 대해서 설명해보세요.
 
@@ -1166,6 +1200,8 @@ print(aInstance[keyPath: \.data]) // Data2
 let key = \A.data
 print(aInstance[keyPath: key]) // Data2
 ```
+
+</br>
 
 ## 71. KVO에 대해서 설명해보세요.
 
