@@ -1301,6 +1301,48 @@ obj.data = "Data2"
 // Optional("Data") has been changed to Optional("Data2")
 ```
 
+</br>
+
+## 76. typealias 가 무엇인지 말해주세요.
+
+</br>
+
+## 77. associatedType이 무엇인지 설명해주세요.
+
+</br>
+
+## 78. Generic이 무엇이고 어떻게 동작하는지 설명해주세요.
+
+</br>
+
+## 79. GCD의 Barrier에 대해 설명해주세요.
+
+</br>
+
+## 80. DispatchSemaphore를 사용하는 상황을 설명해주세요.
+
+</br>
+
+## 81. DispatchGroup은 언제 어떻게 사용할까요?
+
+</br>
+
+## 82. Codable에 대해서 설명해주세요.
+
+</br>
+
+## 83. 그럼 Codable과 NSCodong의 차이는?
+
+</br>
+
+## 84. COW를 직접 구현한다면 어떻게 구현할 것인지?
+
+</br>
+
+## 85.
+
+</br>
+
 ## Questions Source
 
 - https://www.fullstack.cafe/interview-questions/swift
