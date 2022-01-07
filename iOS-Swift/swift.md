@@ -1305,41 +1305,159 @@ obj.data = "Data2"
 
 ## 76. typealias 가 무엇인지 말해주세요.
 
+- 기존에 있는 타입에 새로운 별칭을 붙여서 사용하는 것입니다. 기본타입, 사용자 정의 타입, 클로저에 모두 사용이 가능합니다.
+
+```swift
+typealias Age = Int
+let myAge: Age = 1
+
+print(myAge) // 1
+
+struct StudentFromHighSchool {
+    let name: String = "A"
+    let age: Age = 0
+}
+
+typealias Student = StudentFromHighSchool
+let hunihun = Student()
+print(hunihun.name) // "A"
+
+
+typealias completionBlock = ((Int, Int) -> Bool)
+func test(completion: @escaping completionBlock) -> Bool {
+    return completion(2, 2)
+}
+
+print(test{ $0 == $1 }) // true
+```
+
 </br>
 
 ## 77. associatedType이 무엇인지 설명해주세요.
+
+- associatedType은 프로토콜에 제네릭으로 타입을 정의할 수 있는 방법입니다.
+- 프로토콜을 채택한 타입에서 인터페이스로 제공한 타입을 정의하면 런타임에 타입을 정의합니다.
+
+```swift
+protocol AssociatedTypeTestable {
+    associatedtype Item
+    var value: Item { get }
+}
+
+struct A: AssociatedTypeTestable {
+    var value: String
+}
+
+struct B: AssociatedTypeTestable {
+    var value: Int
+}
+
+let instanceA = A(value: "Test")
+print(instanceA.value) // "Test"
+
+let instanceB = B(value: 2)
+print(instanceB.value) // 2
+```
 
 </br>
 
 ## 78. Generic이 무엇이고 어떻게 동작하는지 설명해주세요.
 
+- 함수나 타입 안에서 사용되거나 인자로 전달되는 타입들을 일반화할 수 있는 방법입니다.
+
+```swift
+struct Stack<Element> {
+  var items = [Element]()
+  mutating func push(_ item: Element) {
+    items.append(item)
+  }
+  mutating func pop() -> Element {
+    return items.removeLast()
+  }
+}
+```
+
 </br>
 
 ## 79. GCD의 Barrier에 대해 설명해주세요.
+
+- Barrier로 실행되는 코드는 이 코드가 실행되는 동안은 다른 비동기 처리가 시작되지 않게 합니다.
+
+```swift
+concurrentQueue.async(flags: .barrier, execute: { })
+```
 
 </br>
 
 ## 80. DispatchSemaphore를 사용하는 상황을 설명해주세요.
 
+- 락으로 사용할 수 있습니다. 어떤 공유자원에 한번에 정해진 스레드들만 접근할 수 있도록 허용할 때 DispatchSemaphore를 사용할 수 있습니다. wait은 세마포어의 값을 줄이고, signal을 증가시킵니다.
+
+```swift
+let semaphore = DispatchSemaphore(value: 1)
+func myFunction() {
+    semaphore.wait()
+    // access the shared resource
+    semaphore.signal()
+}
+```
+
 </br>
 
 ## 81. DispatchGroup은 언제 어떻게 사용할까요?
+
+- DispatchGroup은 여러개의 비동기 코드를 동기적으로 관리할 때 사용할 수 있습니다. 예를 들어서, 여러개의 비동기 처리가 모두 끝났는지 확인하고 싶을 때 사용할 수 있습니다.
+- 작업이 시작될 때 DispatchGroup의 enter() 가 실행되고, 끝날 때 leave()가 실행됩니다. 그룹 내에서 enter를 한 만큼 leave가 되면 notify 메서드가 실행되면서 원하는 로직을 처리할 수 있습니다.
 
 </br>
 
 ## 82. Codable에 대해서 설명해주세요.
 
+- Codable은 Encodable과 Decodable을 모두 채택하는 typealias입니다.
+- Encodable은 객체를 JSON이나 바이너리 같은 외부데이터 형태로 변환하는 기능을 제공하는 프로토콜이고 Decodable은 JSON이나 바이너리 같은 외부데이터를 스위프트 내부 타입으로 변환할 수 있는 기능을 제공하는 프로토콜입니다.
+
 </br>
 
 ## 83. 그럼 Codable과 NSCodong의 차이는?
+
+- Codable은 클래스, 열거형, 구조체에 모두 적용할 수 있지만 NSCoding은 클래스 타입에만 적용이 가능합니다.
+- NSCoding은 NSObject를 상속받은 클래스에서만 채택할 수 있습니다. 또 NSCoding을 상용 반드시 NSKeyedArchiver와 NSKeyedUnarchiver를 사용해 Data 타입으로 저장하고 디코딩해야합니다.
+- 추가적으로 다이나믹 타입에 대한 디코딩은 Codable에서 지원되지 않습니다. 다형성으로 만들어진 객체들은 정상적으로 디코딩되지 않습니다.
 
 </br>
 
 ## 84. COW를 직접 구현한다면 어떻게 구현할 것인지?
 
+- isUniquelyReferencedNonObjC 메서드를 이용해서 값이 앞에 변화가 일어나면 새로운 인스턴스를 생성하게 할 수 있습니다.
+
+```swift
+final class Ref<T> {
+  var val: T
+  init(_ v: T) {val = v}
+}
+
+struct Box<T> {
+    var ref: Ref<T>
+    init(_ x: T) { ref = Ref(x) }
+
+    var value: T {
+        get { return ref.val }
+        set {
+          if !isKnownUniquelyReferenced(&ref) {
+            ref = Ref(newValue)
+            return
+          }
+          ref.val = newValue
+        }
+    }
+}
+```
+
 </br>
 
-## 85.
+## 85. @Main에 대해서 설명해주세요.
+
+- Main 속성은 프로그램의 시작점을 나타냅니다. 프로그램이 시작되면 런타임은 main 송성ㅇ 붙은 타입으로 찾아가 static main 메서드를 실행합니다. 구조체, 클래스, 열거형에 모두 사용할 수 있고 이 속성을 붙이는 타입은 내부에 static main 메서드를 구현하고 있어야합니다. iOS에서는 AppDelegate가 Main 속성을 가지고 있습니다.
 
 </br>
 
