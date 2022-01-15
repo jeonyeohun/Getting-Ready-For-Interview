@@ -323,3 +323,10 @@ https://github.com/gnustep/libs-base/blob/master/Source/NSCache.m
 ## 47. Autoresizing과 Autolayout의 차이
 
 - Autoresizing mask는 어떤 뷰의 바운드가 변경되었을 때, 그 하위 뷰들의 프레임을 어떻게 변경할지 정의합니다. autoresizing mask는 위, 아래, 왼쪽, 오른쪽에 대해 설정할 수 있고 설정된 방향은 상위뷰의 bounds가 변화함에 따라 함께 변화하게 됩니다. 예를 들어서 오른쪽에 대해 Autoresizing mask를 설정하면 화면의 크기가 변화되어서 가로 길이가 늘어났을 때, 설정한 서브뷰의 가로 길이가 함께 늘어나게 됩니다. 설정이 되어있지 않은 면들은 기존 크기를 그대로 유지합니다.
+
+<br/>
+
+## 48. super.viewDidLoad()를 제거하면 어떤 일이 일어나는지?
+- 상위 클래스의 viewDidLoad를 호출하지 않아도 문제는 일어나지 않지만, UIKit의 viewDidLoad가 언제 구현이 바뀔지 모르고, 내부에 중요한 초기화 코드가 들어갈 수도 있기 때문에 당장 영향이 없더라도 super.viewDidLoad를 호출하는 것이 바람직하다고 생각합니다.
+
+<br/>
