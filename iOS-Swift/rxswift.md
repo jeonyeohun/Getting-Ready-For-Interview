@@ -48,6 +48,8 @@
 
 - subscribe가 호출되면 내부에서 \_observers 프로퍼티에 옵저버를 추가하고 이걸 subscription으로 만들어서 반환합니다. 그래서 새로운 subscribe 발생할 때마다 subject 내부에는 구독자들이 등록되고, next를 통해 이벤트를 방출했을 때 모든 옵저버들의 on을 호출하면서 이벤트를 받게합니다.
 
+<br/>
+
 ## 9. 알고있는 Subject 설명
 
 - PublishSubject, BehaviorSubject, ReplaySubject 가 있습니다.
@@ -55,20 +57,69 @@
 - BehaviorSubject는 구독이 시작되기 전 방출되었던 가장 최근 값을 새로운 구독자에게 방출합니다. 첫 구독자라면 지정된 기본값을 방출합니다. 
 - ReplaySubject는 버퍼크기를 정해두고 새로운 구독이 시작되면 버퍼 크기만큼의 최근에 방출되었던 값을 모아두었다가 새로운 구독자에게 방출합니다. 
 
-## 10. Observable은 어떤 타입이나 프로토콜을 채택하는지 말해주고 설명해주세요.
+<br/>
 
-## 11. DisposeBag이 필요한 이유는?
+## 10. Variables는 모르는지?
 
-## 12. Observable을 커스텀하게 만드는 과정을 설명해주세요.
+- Variables는 BehaviorSubject는 래핑하고 서브젝트의 현재 값을 상태로 가지는 객체입니다. 
+- Variable은 error나 completed를 추가할 수 없고 .value에 값을 대입해 새로운 값을 방출하게 할 수 있습니다.
+- 어떤 상태를 관찰하고 가지고 있어야 할 때 유용하게 사용할 수 있습니다. 예를 들면 로그인 세션 정보를 가지고 있다가 로그아웃이 될 때 상태를 업데이트해 앱 전역에 이벤트를 전달할 수 있습니다.
 
-## 13. drive, bind, subscribe의 차이를 말해주세요.
+<br/>
+
+## 11. 그럼 옵저버블은 멀티캐스트가 아닌가요? 왜 그렇죠?
+
+- 옵저버블은 subscribe가 될 때마다 create 클로저를 생성해서 새로운 disposable을 반환합니다.
+
+<br/>
+
+## 12. Observable은 어떤 타입이나 프로토콜을 채택하는지 말해주고 설명해주세요.
+
+- observable의 상위 프로토콜은 ObservableType이고 subscribe에 대한 인터페이스를 가지고 있습니다. 그리고 ObservableType은 ObservableConvertibleType 프로토콜을 채택하고 있고, 이 프로토콜은 asObservable에 대한 인터페이스를 가지고 있습니다.
+
+<br/>
+
+## 13. DisposeBag이 필요한 이유는?
+
+- DisposeBag이 deinit 되면 disposeBag이 가지고 있던 모든 disposable들에 대해서 dispose 메서드를 순차적으로 호출합니다. 이 과정에서 비동기 처리가 취소처럼 시퀀스를 중단하면서 해야할 작업들을 각 disposable에 대해서 실행할 수 있습니다.
+
+<br/>
+
+## 14. Observable을 커스텀하게 만드는 과정을 설명해주세요.
+
+- create 메서드에 방출할 이벤트들을 정의하는 클로저를 인자로 전달할 수 있습니다. 해당 클로저는 Observer 타입을 파라미터로 받고, 이 observer에 next, completed, error 이벤트를 방출시킬 수 있습니다. 그리고 마지막으로는 시퀀스를 종료시킬 수 있도록 disposables.create 메서드를 호출해 최종적으로 반환할 observable이 disposable을 가질 수 있도록합니다.
+
+<br/>
+
+## 15. drive, bind, subscribe의 차이를 말해주세요.
+
+- 세 방식 모두 특정한 observable에 대해 구독을 시작하고 전달받은 이벤트를 어떻게 처리할지 결정할 수 있게하는 클로저를 정의할 수 있게합니다. 
+- bind는 error에 대한 이벤트는 받지 않고 next만 처리합니다. 만약 error가 방출되면 런타임에러가 발생합니다. 
+- drive는 bind와 같이 next 이벤트만 처리하지만 모든 이벤트가 메인 스레드에서 실행되는 것을 보장합니다. 
+
+<br/>
 
 ## 14. HotObservable과 ColdObservable의 차이는?
 
-## 15. subscribe의 동작과정
+- HotObservable은 구독이 시작되지 않아도 이벤트를 바로 방출합니다. 반면에 ColdObservable은 구독이 시작된 이후에 이벤트를 방출합니다.
 
-## 16. rxswift의 코드를 보면 observer에 대한 코드가 없는데 observer는 어디서 만들어진 것인지?
+<br/>
 
-## 17. PublishSubject, BehaviorSubject, ReplaySubject의 차이를 설명해주세요.
+## 15. HotObservable 예시는?
 
-## 18. Observable을 직접 구현한다면 어떻게 만들 것인지?
+- Subject는 새로운 구독자가 생겨도 이벤트를 처음부터 방출하는 것이 아니라 이벤트를 중간부터 전달하기 때문에 HotObservable이라고 할 수 있습니다. 
+
+<br/>
+
+## 16. subscribe의 동작과정
+
+- subscribe는 내부적으로 subscribe와 함께 전달된 클로저를 가지는 AnonymousObserver를 생성합니다.
+- 그리고 Disposable을 생성할 때 현재 자기자신을 subscribe하면서 인자로 observer를 전달하여 생성되는 Disposable을 반환합니다. 
+
+<br/>
+
+## 17. rxswift의 코드를 보면 observer에 대한 코드가 없는데 observer는 어디서 만들어진 것인지?
+
+- subscribe 내에서 observer를 생성하고 있습니다.
+
+<br/>
