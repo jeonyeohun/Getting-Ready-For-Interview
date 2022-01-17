@@ -330,3 +330,43 @@ https://github.com/gnustep/libs-base/blob/master/Source/NSCache.m
 - 상위 클래스의 viewDidLoad를 호출하지 않아도 문제는 일어나지 않지만, UIKit의 viewDidLoad가 언제 구현이 바뀔지 모르고, 내부에 중요한 초기화 코드가 들어갈 수도 있기 때문에 당장 영향이 없더라도 super.viewDidLoad를 호출하는 것이 바람직하다고 생각합니다.
 
 <br/>
+
+## 49. UIResponder에 대해 설명해주세요.
+- UIResponder는 모든 UIView의 상위 객체이면서 이벤트를 받고 처리하거나 다른 UIResponder 객체에게 전달하는 역할을 합니다. UIKit은 first responder에게 발생한 이벤트를 전달하고 UIResponder는 해당 이벤트를 자신이 처리할 수 있다면 처리하고, 처리할 수 없다면 next 프로퍼티에 할당된 다음 Responder에게 전달합니다.
+
+<br/>
+
+## 50. Responder Chain은 그럼 뭔가요?
+- UIKit이 모든 UIResponder를 엮어서 관리하는 체인입니다. 각 리스폰더는 next프로퍼티로 자신의 다음 리스폰더를 참조하고 있습니다.
+
+<br/>
+
+## 51. 그럼 기본적으로 클래스별로 이벤트가 전달되는 순서가 어떤지
+- UIView, UIViewController, UIWindow, UIApplication, UIApplicationDelegate 순으로 이벤트가 전달됩니다. 만약 어떤 뷰나 뷰 컨트롤러가 상위뷰에 속해져있는 뷰라면 해당 뷰나 뷰 컨트롤러에 이벤트를 전달합니다.
+
+<br/>
+
+## 52. Responder Chain을 임의로 변경하려면 어떻게 해야할까요?
+- 특정한 뷰의 next 프로퍼티를 오버라이딩해서 다음 리스폰더를 지정할 수 있고, becomeFirstResponder 메서드를 사용해서 특정한 뷰를 firstResponder로 만들 수 있습니다. 이때는 이벤트가 first responder에게 전달됩니다. 
+
+<br/>
+
+## 53. 그럼 이벤트는 어떤 형태로 전달되는지? 터치 이벤트는 다른게 있는지?
+- 이벤트는 UIEvent 객체로 전달됩니다. 터치 이벤트는 UITouch 객체로 관리되고 UIEvent 객체를 통해 접근할 수 있습니다. 터치 이벤트 객체는 터치된 시간, 터치된 영역, 터치 강도, 터치 위치 등의 정보를 포함하고 있습니다.
+
+<br/>
+
+## 54. UIControl에서 이벤트가 발생하면 해당 이벤트를 처리하기까지의 과정을 설명해주세요.
+- UIControl은 addTarget 메서드를 정의할 수 있게 합니다. 이때 target과 action을 인자로 전달할 수 있습니다. target은 어떤 객체이던지 들어갈 수 있지만 일반적으로는 이벤트를 처리할 뷰 컨트롤러를 지정합니다. 만약 target에 nil이 들어가면 UIControl은 발생한 이벤트에 대한 처리를 구현하고 있는 리스폰더를 리스폰더 체인을 통해 찾아냅니다. 
+- action은 이벤트를 처리할 메서드에 대한 시그니처를 나타냅니다. 만약 이벤트가 발생하면 UIControl 객체는 이 메서드를 호출하고 UIApplication이 호출 메시지를 받아 리스폰더 체인에서 이 메서드를 찾아 이벤트를 전달합니다. @IBAction이 이런 메서드를 식별할 수 있도록 합니다.
+
+<br/>
+
+## 55. UI 작업을 메인스레드에서 처리해야하는 이유
+- UI는 변경을 트리거하는 이벤트가 발생하자마자 변경되는 것이 아니라 런루프의 한 사이클 끝에 변경됩니다. 만약 여러 스레드에서 UI작업을 처리하게 되면 각각 다른 런루프에서 작업을 처리하게 되고, 뷰가 화면에 그려지는 시점이 제각각이 되거나 레이아웃에 대한 계산이 의도했던 것과 다를 수 있을 것 같습니다.
+
+<br/>
+
+## 56. UIViewController의 상위 클래스들을 모두 말하고 설명해주세요.
+- UIViewController는 UIResponder를 상속하고, UIResponder는 NSObject를 상속합니다. 
+- UIResponder는 이벤트를 받고 리스폰더 체인을 구성할 수 있게 합니다. NSObject는 Objective-C의 루트 클래스로 NSObject를 상속해 Objective-C 런타임에 대한 인터페이스나 기능을 사용할 수 있도록 합니다.
