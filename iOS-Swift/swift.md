@@ -1026,8 +1026,6 @@
 - vtable은 `메소드 구현체의 주소를 배열로` 가지고 있습니다.
 - 클래스마다 `vtable`이 존재합니다.
 
--> 아직 정확히 잘 모르겠어서 https://developer.apple.com/videos/play/wwdc2016/416/ 이거부터 보려구요ㅠ
-
 </br>
 
 ## 61. 프로퍼티 옵저버에 대해 설명해보세요.
@@ -1058,7 +1056,7 @@
   // A is changed to B
   ```
 
-- 연산프로퍼티는 부모 클래스의 연산 프로퍼티를 오버라이딩하는 경우만 프로퍼티 옵저버를 추가할 수 있습니다.
+- 연산 프로퍼티는 부모 클래스의 연산 프로퍼티를 오버라이딩하는 경우만 프로퍼티 옵저버를 추가할 수 있습니다.
 
 </br>
 
@@ -1421,7 +1419,7 @@ func myFunction() {
 ## 83. 그럼 Codable과 NSCodong의 차이는?
 
 - Codable은 클래스, 열거형, 구조체에 모두 적용할 수 있지만 NSCoding은 클래스 타입에만 적용이 가능합니다.
-- NSCoding은 NSObject를 상속받은 클래스에서만 채택할 수 있습니다. 또 NSCoding을 상용 반드시 NSKeyedArchiver와 NSKeyedUnarchiver를 사용해 Data 타입으로 저장하고 디코딩해야합니다.
+- NSCoding은 NSObject를 상속받은 클래스에서만 채택할 수 있습니다. 또 NSCoding을 채택하면 반드시 NSKeyedArchiver와 NSKeyedUnarchiver를 사용해 Data 타입으로 저장하고 디코딩해야합니다.
 - 추가적으로 다이나믹 타입에 대한 디코딩은 Codable에서 지원되지 않습니다. 다형성으로 만들어진 객체들은 정상적으로 디코딩되지 않습니다.
 
 </br>
@@ -1457,9 +1455,11 @@ struct Box<T> {
 
 ## 85. @Main에 대해서 설명해주세요.
 
-- Main 속성은 프로그램의 시작점을 나타냅니다. 프로그램이 시작되면 런타임은 main 송성ㅇ 붙은 타입으로 찾아가 static main 메서드를 실행합니다. 구조체, 클래스, 열거형에 모두 사용할 수 있고 이 속성을 붙이는 타입은 내부에 static main 메서드를 구현하고 있어야합니다. iOS에서는 AppDelegate가 Main 속성을 가지고 있습니다.
+- Main 속성은 프로그램의 시작점을 나타냅니다. 프로그램이 시작되면 런타임은 main 속성이 붙은 타입으로 찾아가 static main 메서드를 실행합니다. 구조체, 클래스, 열거형에 모두 사용할 수 있고 이 속성을 붙이는 타입은 내부에 static main 메서드를 구현하고 있어야합니다. iOS에서는 AppDelegate가 Main 속성을 가지고 있습니다.
 
 </br>
+
+## 86. Subscription에 대해서 설명해주세요.
 
 ## Questions Source
 
