@@ -370,3 +370,17 @@ https://github.com/gnustep/libs-base/blob/master/Source/NSCache.m
 ## 56. UIViewController의 상위 클래스들을 모두 말하고 설명해주세요.
 - UIViewController는 UIResponder를 상속하고, UIResponder는 NSObject를 상속합니다. 
 - UIResponder는 이벤트를 받고 리스폰더 체인을 구성할 수 있게 합니다. NSObject는 Objective-C의 루트 클래스로 NSObject를 상속해 Objective-C 런타임에 대한 인터페이스나 기능을 사용할 수 있도록 합니다.
+
+<br/>
+
+## 57. 앱이 처음 시작되면 어떤 일들이 일어나는지 설명해주세요.
+- main 함수가 실행됩니다.
+- main 함수는 UIApplicationMain 함수를 호출합니다.
+- UIApplicationMain은 UIApplication 인스턴스를 생성합니다.
+- 그리고 Info.plist에서 필요한 데이터를 로드합니다. main Nib 파일을 여기서 찾아 로드합니다.
+- UIApplication은 AppDelegate 인스턴스를 생성하고 UIApplication을 위임합니다. 
+- UIApplication은 RunLoop를 생성합니다.
+- 준비가 완료되면 AppDelegate의 didFinishlaunchingWithOptions를 호출합니다.
+- 세션에 대한 설정이 완료되면 SceneDelegate의 willConnectToSession이 호출됩니다.
+
+![image](https://user-images.githubusercontent.com/46087477/150353961-db9c84a8-2eb3-4d42-b108-690943f718de.png)
