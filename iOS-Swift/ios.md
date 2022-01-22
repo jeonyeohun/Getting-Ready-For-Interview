@@ -47,8 +47,8 @@
 
 ## 7. UIApplication 객체는 어떤 일을 하나요?
 
-- UIApplication은 유저로부터 이벤트를 받아 `UIControl `객체로 만든 뒤 다른 객체로 전송하는 역할을 합니다.
-- 또 모든 `UIWindow 객체의 리스트`를 관리하면서 이를 통해 모든 UIView에 접근이 가능하도록합니다.
+- UIApplication은 UIApplicationMain에서 만들어지는 싱글톤 객체입니다. UIApplication은 최초에 런루프를 만들고 AppDelegate에게 delegate를 위임합니다. 
+- 시스템에서 발생하는 이벤트가 UIKit에 의해 UIEvent객체로 만들어지면 UIApplication.shared.sendEvent()를 통해 해당 이벤트를 이벤트 큐에 전달합니다.
 
 <br/>
 
