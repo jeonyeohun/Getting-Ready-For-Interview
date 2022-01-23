@@ -503,9 +503,8 @@
 
 ## 36. weak과 unowned 의 차이를 설명하고 예를 들어주세요. (Explain the difference between weak and unowned references. Provide an example.)
 
-- weak은 참조하고 있던 인스턴스가 해제되는 것을 염두하여 항상 Optional한 타입을 가집니다. 만약 weak으로 선언한 변수가 참조하고 있던 인스턴스가 메모리에서 해제되면 해당 변수의 값은 nil로 채워집니다.
-- unowned는 참조하고 있는 인스턴스가 `unowned 변수 이전에는 절대 해제되지 않음을 보장하는 상황`에서 사용합니다.
-- unwoend는 `Optional을 허용하지 않습니다`. 따라서 unowned가 참조하고 있던 인스턴스가 해제된 이후에 unowned 변수를 참조하면 런타임 에러가 발생합니다.
+- unowned로 참조하는 객체의 라이프사이클이 반드시 현재 객체보다 빨리 끝날 때 사용합니다. unowned로 사용하던 인스턴스가 해제되면 해당 프로퍼티는 댕글링 포인터가 생기고 이를 참조하려고 하면 런타임에러가 발생합니다. 반면의 weak은 참조하던 인스턴스가 해제되면 nil을 가지게 됩니다. 따라서 weak은 반드시 optional로 선언해야합니다. 스위프트 5.0부터는 unowned에 optinal을 사용할 수 있게 되어서 라이프 사이클을 명시적으로 표현하면서 nil을 할당할 수도 있습니다.
+- 메모리 레벨로 들어가면 객체를 참조하는 방식에서의 차이도 있습니다. unowned로 참조할 때는 객체 자체를 참조하지만, weak으로 참조할 때는 참조 카운트를 기록하는 사이드 테이블을 참조하고 이를 통해서 간접적으로 객체를 참조합니다.
 
   ```swift
   // https://stackoverflow.com/questions/24011575/what-is-the-difference-between-a-weak-reference-and-an-unowned-reference
