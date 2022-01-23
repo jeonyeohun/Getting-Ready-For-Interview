@@ -1333,7 +1333,7 @@ print(test{ $0 == $1 }) // true
 ## 77. associatedType이 무엇인지 설명해주세요.
 
 - associatedType은 프로토콜에 제네릭으로 타입을 정의할 수 있는 방법입니다.
-- 프로토콜을 채택한 타입에서 인터페이스로 제공한 타입을 정의하면 런타임에 타입을 정의합니다.
+- 프로토콜을 채택한 타입에서 인터페이스로 제공한 타입을 정의하여 사용합니다.
 
 ```swift
 protocol AssociatedTypeTestable {
@@ -1378,7 +1378,8 @@ struct Stack<Element> {
 
 ## 79. GCD의 Barrier에 대해 설명해주세요.
 
-- Barrier로 실행되는 코드는 이 코드가 실행되는 동안은 다른 비동기 처리가 시작되지 않게 합니다.
+- 베리어로 등록된 작업은 해당 작업이 끝나기 전까지 동시에 gcd에서 다른 작업이 수행되지 않도록 합니다.
+- barrier 플래그를 가지는 작업이 등록되면 큐에서 해당 작업 이전에 등록된 작업들을 모두 처리할 때까지 베리어와 베리어 이후에 등록된 작업의 실행을 지연시키고, 앞선 작업들이 모두 끝났을 때 베리어 작업만 단독으로 실행합니다.
 
 ```swift
 concurrentQueue.async(flags: .barrier, execute: { })
@@ -1425,7 +1426,7 @@ func myFunction() {
 
 ## 84. COW를 직접 구현한다면 어떻게 구현할 것인지?
 
-- isUniquelyReferencedNonObjC 메서드를 이용해서 값이 앞에 변화가 일어나면 새로운 인스턴스를 생성하게 할 수 있습니다.
+- isUniquelyReferenced 메서드를 이용해서 값이 앞에 변화가 일어나면 새로운 인스턴스를 생성하게 할 수 있습니다.
 
 ```swift
 final class Ref<T> {
@@ -1459,6 +1460,8 @@ struct Box<T> {
 </br>
 
 ## 86. Subscription에 대해서 설명해주세요.
+
+- subscription은 리스트, 배열 등의 콜렉션에 인덱스를 통해 요소에 접근할 수 있게 해주는 문법입니다. subscript가 없는 타입은 내부에 subscript(index: Int) 메서드를 구현해서 사용할 수 있고, get, set에 동작을 정의하여 사용할 수 있습니다.
 
 ## Questions Source
 
